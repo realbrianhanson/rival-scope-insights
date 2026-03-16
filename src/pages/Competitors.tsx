@@ -14,7 +14,6 @@ import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
 import { CrosshairIllustration } from "@/components/empty-states/CrosshairIllustration";
-import { useAppSettings } from "@/hooks/useAppSettings";
 
 type FilterTab = "all" | "active" | "paused" | "archived";
 

@@ -15,7 +15,6 @@ import { Search, Loader2, Zap } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
 import { ShieldAssembleIllustration } from "@/components/empty-states/ShieldAssembleIllustration";
-import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export default function Battlecards() {
   useDocumentTitle("Battlecards");

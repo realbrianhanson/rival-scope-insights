@@ -21,7 +21,6 @@ import { Target, List, LayoutGrid, ChevronDown } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
 import { MountainFlagIllustration } from "@/components/empty-states/MountainFlagIllustration";
-import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 // --- types ---
 type Gap = any;
