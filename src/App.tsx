@@ -24,6 +24,7 @@ import ComparisonsPage from "./pages/Comparisons";
 import ComparisonDetail from "./pages/ComparisonDetail";
 import AlertsPage from "./pages/Alerts";
 import SettingsPage from "./pages/Settings";
+import SharedView from "./pages/SharedView";
 import OnboardingWizard from "./components/OnboardingWizard";
 import { Settings } from "lucide-react";
 
@@ -85,6 +86,7 @@ const App = () => (
               <Route path="/comparisons/:id" element={<ProtectedRoute><ComparisonDetail /></ProtectedRoute>} />
               <Route path="/alerts" element={<ProtectedRoute><AlertsPage /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+              <Route path="/shared/:token" element={<SharedView />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

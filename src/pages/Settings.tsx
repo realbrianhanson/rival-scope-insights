@@ -30,8 +30,14 @@ import {
   Sun,
   Moon,
   Info,
+  Link2,
+  Trash2,
+  ExternalLink,
+  Eye,
 } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useAllSharedLinks, useDisableSharedLink, useDisableAllSharedLinks } from "@/hooks/useSharedLinks";
+import { formatDistanceToNow } from "date-fns";
 
 const INDUSTRIES = [
   "SaaS", "E-commerce", "Fintech", "Healthcare", "EdTech",
@@ -53,12 +59,14 @@ export default function SettingsPage() {
             <TabsList className="bg-muted/50 border border-border">
               <TabsTrigger value="profile" className="gap-1.5"><User className="h-3.5 w-3.5" />Profile</TabsTrigger>
               <TabsTrigger value="appearance" className="gap-1.5"><Palette className="h-3.5 w-3.5" />Appearance</TabsTrigger>
+              <TabsTrigger value="shared" className="gap-1.5"><Link2 className="h-3.5 w-3.5" />Shared Links</TabsTrigger>
               <TabsTrigger value="notifications" className="gap-1.5"><Bell className="h-3.5 w-3.5" />Notifications</TabsTrigger>
               <TabsTrigger value="usage" className="gap-1.5"><BarChart3 className="h-3.5 w-3.5" />Usage</TabsTrigger>
             </TabsList>
 
             <TabsContent value="profile"><ProfileTab /></TabsContent>
             <TabsContent value="appearance"><AppearanceTab /></TabsContent>
+            <TabsContent value="shared"><SharedLinksTab /></TabsContent>
             <TabsContent value="notifications"><NotificationsTab /></TabsContent>
             <TabsContent value="usage"><UsageTab /></TabsContent>
           </Tabs>
@@ -310,6 +318,109 @@ function UsageTab() {
           Cloud & AI usage is managed in your Lovable workspace settings.
         </p>
       </div>
+    </div>
+  );
+}
+
+function SharedLinksTab() {
+  const { data: links, isLoading } = useAllSharedLinks();
+  const disableLink = useDisableSharedLink();
+  const disableAll = useDisableAllSharedLinks();
+
+  const contentTypeLabels: Record<string, string> = {
+    report: "Report",
+    battlecard: "Battlecard",
+    comparison: "Comparison",
+  };
+
+  const contentTypeBadge: Record<string, string> = {
+    report: "bg-primary/10 text-primary",
+    battlecard: "bg-accent/10 text-accent",
+    comparison: "bg-warning/10 text-warning",
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Active Shared Links</h3>
+        {links && links.length > 0 && (
+          <Button variant="destructive" size="sm" onClick={() => disableAll.mutate()} disabled={disableAll.isPending}>
+            <Trash2 className="mr-1.5 h-3.5 w-3.5" />
+            Disable All
+          </Button>
+        )}
+      </div>
+
+      {isLoading ? (
+        <div className="space-y-3">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="bg-card border border-border rounded-xl p-5 space-y-2">
+              <div className="h-4 w-1/3 skeleton-shimmer rounded" />
+              <div className="h-3 w-2/3 skeleton-shimmer rounded" />
+            </div>
+          ))}
+        </div>
+      ) : !links || links.length === 0 ? (
+        <div className="bg-card border border-border rounded-xl p-12 text-center">
+          <p className="text-sm font-medium text-foreground">No active shared links</p>
+          <p className="text-xs text-muted-foreground mt-1">Share reports, battlecards, or comparisons to see them here.</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {links.map((link: any) => {
+            const shareUrl = `${window.location.origin}/shared/${link.share_token}`;
+            return (
+              <div key={link.id} className="bg-card border border-border rounded-xl p-5 transition-all hover:border-border-active">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={cn(
+                        "text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full",
+                        contentTypeBadge[link.content_type] || "bg-muted text-muted-foreground"
+                      )}>
+                        {contentTypeLabels[link.content_type] || link.content_type}
+                      </span>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Eye className="h-3 w-3" />
+                        {link.view_count} view{link.view_count !== 1 ? "s" : ""}
+                      </div>
+                    </div>
+                    <p className="text-xs font-mono text-muted-foreground truncate">{shareUrl}</p>
+                    <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                      <span>Created {formatDistanceToNow(new Date(link.created_at), { addSuffix: true })}</span>
+                      {link.expires_at && (
+                        <span>Expires {formatDistanceToNow(new Date(link.expires_at), { addSuffix: true })}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex gap-1.5 flex-shrink-0">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-8"
+                      onClick={() => {
+                        navigator.clipboard.writeText(shareUrl);
+                        toast("Link copied!");
+                      }}
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="h-8"
+                      onClick={() => disableLink.mutate(link.id)}
+                      disabled={disableLink.isPending}
+                    >
+                      Disable
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

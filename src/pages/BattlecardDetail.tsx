@@ -22,8 +22,10 @@ import {
   RefreshCw,
   Download,
   Loader2,
+  Share2,
 } from "lucide-react";
 import { useExportPdf } from "@/hooks/useExportPdf";
+import { ShareLinkModal } from "@/components/ShareLinkModal";
 
 function DetailSkeleton() {
   return (
@@ -47,6 +49,7 @@ export default function BattlecardDetail() {
   const { user } = useAuth();
   const { data: bc, isLoading, refetch } = useBattlecardDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const { exporting, exportPdf } = useExportPdf();
 
   const comp = bc?.competitors as any;
@@ -120,6 +123,10 @@ export default function BattlecardDetail() {
               </p>
             </div>
             <div className="flex gap-2 print:hidden">
+              <Button size="sm" variant="outline" onClick={() => setShareOpen(true)}>
+                <Share2 className="mr-1.5 h-4 w-4" />
+                Share
+              </Button>
               <Button size="sm" variant="outline" onClick={() => exportPdf("battlecard", bc.id)} disabled={exporting}>
                 {exporting ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Download className="mr-1.5 h-4 w-4" />}
                 Export PDF
@@ -264,6 +271,7 @@ export default function BattlecardDetail() {
           </div>
         </AnimatedItem>
       </AnimatedPage>
+      <ShareLinkModal open={shareOpen} onOpenChange={setShareOpen} contentType="battlecard" contentId={bc.id} />
     </AppLayout>
   );
 }

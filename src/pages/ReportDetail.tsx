@@ -22,8 +22,10 @@ import {
   Loader2,
   ExternalLink,
   Download,
+  Share2,
 } from "lucide-react";
 import { useExportPdf } from "@/hooks/useExportPdf";
+import { ShareLinkModal } from "@/components/ShareLinkModal";
 
 const reportTypeColors: Record<string, string> = {
   full_intel: "bg-[hsl(164,100%,42%)]/10 text-[hsl(164,100%,42%)]",
@@ -87,6 +89,7 @@ export default function ReportDetail() {
   const { user } = useAuth();
   const { data: report, isLoading, refetch } = useReportDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const { exporting, exportPdf } = useExportPdf();
   useDocumentTitle(report?.title || "Report");
 
@@ -176,6 +179,10 @@ export default function ReportDetail() {
               </div>
             </div>
             <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={() => setShareOpen(true)}>
+                <Share2 className="mr-1.5 h-4 w-4" />
+                Share
+              </Button>
               <Button variant="outline" size="sm" onClick={() => exportPdf("report", report.id)} disabled={exporting}>
                 {exporting ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Download className="mr-1.5 h-4 w-4" />}
                 Export PDF
@@ -207,6 +214,7 @@ export default function ReportDetail() {
           {report.report_type === "executive_briefing" && fullReport && <ExecutiveBriefingSection report={fullReport} />}
         </AnimatedItem>
       </AnimatedPage>
+      <ShareLinkModal open={shareOpen} onOpenChange={setShareOpen} contentType="report" contentId={report.id} />
     </AppLayout>
   );
 }

@@ -18,7 +18,9 @@ import {
   X,
   Minus,
   HelpCircle,
+  Share2,
 } from "lucide-react";
+import { ShareLinkModal } from "@/components/ShareLinkModal";
 
 function StatusIcon({ status }: { status: string }) {
   switch (status) {
@@ -55,6 +57,7 @@ export default function ComparisonDetail() {
   const { user } = useAuth();
   const { data: matrix, isLoading, refetch } = useComparisonDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   useDocumentTitle(matrix?.title || "Comparison");
 
   const handleRegenerate = async () => {
@@ -154,14 +157,20 @@ export default function ComparisonDetail() {
                 Generated {format(new Date(matrix.created_at), "MMM d, yyyy 'at' h:mm a")}
               </p>
             </div>
-            <Button size="sm" variant="outline" onClick={handleRegenerate} disabled={regenerating}>
-              {regenerating ? (
-                <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
-              ) : (
-                <RefreshCw className="mr-1.5 h-4 w-4" />
-              )}
-              Regenerate
-            </Button>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" onClick={() => setShareOpen(true)}>
+                <Share2 className="mr-1.5 h-4 w-4" />
+                Share
+              </Button>
+              <Button size="sm" variant="outline" onClick={handleRegenerate} disabled={regenerating}>
+                {regenerating ? (
+                  <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="mr-1.5 h-4 w-4" />
+                )}
+                Regenerate
+              </Button>
+            </div>
           </div>
         </AnimatedItem>
 
@@ -275,6 +284,7 @@ export default function ComparisonDetail() {
           </AnimatedItem>
         )}
       </AnimatedPage>
+      <ShareLinkModal open={shareOpen} onOpenChange={setShareOpen} contentType="comparison" contentId={matrix.id} />
     </AppLayout>
   );
 }
