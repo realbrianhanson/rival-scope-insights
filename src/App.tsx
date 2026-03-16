@@ -4,8 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/hooks/useTheme";
-import { ReactNode } from "react";
-import { FileText, Shield, TrendingUp, GitCompareArrows, Bell, Settings } from "lucide-react";
+import { ReactNode, useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -23,6 +23,9 @@ import MarketGapsPage from "./pages/MarketGaps";
 import ComparisonsPage from "./pages/Comparisons";
 import ComparisonDetail from "./pages/ComparisonDetail";
 import AlertsPage from "./pages/Alerts";
+import SettingsPage from "./pages/Settings";
+import OnboardingWizard from "./components/OnboardingWizard";
+import { Settings } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +33,32 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
   const { session, loading } = useAuth();
   if (loading) return <div className="min-h-screen bg-background" />;
   if (!session) return <Navigate to="/auth" replace />;
+  return <>{children}</>;
+}
+
+function OnboardingGate({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
+  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    if (!user) { setNeedsOnboarding(false); return; }
+    const check = async () => {
+      const [profileRes, compRes] = await Promise.all([
+        supabase.from("profiles").select("company_name").eq("id", user.id).single(),
+        supabase.from("competitors").select("id", { count: "exact", head: true }),
+      ]);
+      const hasCompany = !!profileRes.data?.company_name;
+      const hasComps = (compRes.count ?? 0) > 0;
+      setNeedsOnboarding(!hasCompany && !hasComps);
+    };
+    check();
+  }, [user]);
+
+  if (needsOnboarding === null) return <div className="min-h-screen bg-background" />;
+  if (needsOnboarding && !dismissed) {
+    return <OnboardingWizard onComplete={() => setDismissed(true)} />;
+  }
   return <>{children}</>;
 }
 
@@ -44,7 +73,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+              <Route path="/" element={<ProtectedRoute><OnboardingGate><Index /></OnboardingGate></ProtectedRoute>} />
               <Route path="/competitors" element={<ProtectedRoute><Competitors /></ProtectedRoute>} />
               <Route path="/competitors/:id" element={<ProtectedRoute><CompetitorDetail /></ProtectedRoute>} />
               <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
@@ -55,7 +84,7 @@ const App = () => (
               <Route path="/comparisons" element={<ProtectedRoute><ComparisonsPage /></ProtectedRoute>} />
               <Route path="/comparisons/:id" element={<ProtectedRoute><ComparisonDetail /></ProtectedRoute>} />
               <Route path="/alerts" element={<ProtectedRoute><AlertsPage /></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><StubPage title="Settings" description="Manage your account and app configuration." icon={Settings} /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
