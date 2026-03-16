@@ -7,6 +7,8 @@ import { useCompetitors } from "@/hooks/useCompetitors";
 import { useAuth } from "@/hooks/useAuth";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { Button } from "@/components/ui/button";
+import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
+import { DocumentDrawIllustration } from "@/components/empty-states/DocumentDrawIllustration";
 import {
   Select,
   SelectContent,
