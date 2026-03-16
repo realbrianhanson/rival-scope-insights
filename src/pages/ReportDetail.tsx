@@ -179,6 +179,10 @@ export default function ReportDetail() {
               </div>
             </div>
             <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={() => setShareOpen(true)}>
+                <Share2 className="mr-1.5 h-4 w-4" />
+                Share
+              </Button>
               <Button variant="outline" size="sm" onClick={() => exportPdf("report", report.id)} disabled={exporting}>
                 {exporting ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Download className="mr-1.5 h-4 w-4" />}
                 Export PDF

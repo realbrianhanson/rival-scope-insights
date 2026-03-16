@@ -86,6 +86,7 @@ const App = () => (
               <Route path="/comparisons/:id" element={<ProtectedRoute><ComparisonDetail /></ProtectedRoute>} />
               <Route path="/alerts" element={<ProtectedRoute><AlertsPage /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+              <Route path="/shared/:token" element={<SharedView />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
