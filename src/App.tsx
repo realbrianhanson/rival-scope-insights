@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/hooks/useTheme";
 import { ReactNode } from "react";
-import { Users, FileText, Shield, TrendingUp, GitCompareArrows, Bell, Settings } from "lucide-react";
+import { FileText, Shield, TrendingUp, GitCompareArrows, Bell, Settings } from "lucide-react";
 
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
