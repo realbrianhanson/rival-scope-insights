@@ -33,6 +33,8 @@ import {
   Trash2,
   Loader2,
 } from "lucide-react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useAppSettings } from "@/hooks/useAppSettings";
 
 const PAGE_SIZE = 20;
 
