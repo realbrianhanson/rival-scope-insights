@@ -22,8 +22,10 @@ import {
   RefreshCw,
   Download,
   Loader2,
+  Share2,
 } from "lucide-react";
 import { useExportPdf } from "@/hooks/useExportPdf";
+import { ShareLinkModal } from "@/components/ShareLinkModal";
 
 function DetailSkeleton() {
   return (
