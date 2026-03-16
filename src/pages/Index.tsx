@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AppLayout } from "@/components/AppLayout";
 import { AnimatedPage, AnimatedItem } from "@/components/AnimatedPage";
 import { useAppSettings } from "@/hooks/useAppSettings";
@@ -9,8 +10,12 @@ import { RecentReports } from "@/components/dashboard/RecentReports";
 import { TopOpportunities } from "@/components/dashboard/TopOpportunities";
 import { AlertFeed } from "@/components/dashboard/AlertFeed";
 import { ThreatRadar } from "@/components/dashboard/ThreatRadar";
-import { Target, TrendingUp, Zap, Bell, ShieldAlert } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Target, TrendingUp, Zap, Bell, ShieldAlert, Newspaper, Loader2, CheckCircle2, Circle, Brain, Database, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const scoreColor = (score: number) => {
   if (score >= 9) return "#FF6B35";
@@ -26,6 +31,12 @@ const threatColor = (score: number) => {
   return "#00D4AA";
 };
 
+const briefingSteps = [
+  { label: "Gathering intelligence", icon: Database },
+  { label: "Analyzing threats", icon: Brain },
+  { label: "Building briefing", icon: FileText },
+];
+
 export default function Index() {
   const { data: settings } = useAppSettings();
   const { user } = useAuth();
@@ -35,15 +46,56 @@ export default function Index() {
   const navigate = useNavigate();
   const firstName = user?.user_metadata?.full_name?.split(" ")[0] || "there";
 
+  const [briefingLoading, setBriefingLoading] = useState(false);
+  const [briefingStep, setBriefingStep] = useState(0);
+
+  const handleGenerateBriefing = async () => {
+    if (!user) return;
+    setBriefingLoading(true);
+    setBriefingStep(0);
+
+    try {
+      const stepTimer1 = setTimeout(() => setBriefingStep(1), 3000);
+      const stepTimer2 = setTimeout(() => setBriefingStep(2), 6000);
+
+      const { data, error } = await supabase.functions.invoke("generate-executive-briefing", {
+        body: { user_id: user.id },
+      });
+
+      clearTimeout(stepTimer1);
+      clearTimeout(stepTimer2);
+
+      if (error) throw new Error(error.message);
+      if (!data?.success) throw new Error(data?.error || "Failed to generate briefing");
+
+      toast.success("Executive briefing generated!");
+      if (data?.report_id) {
+        navigate(`/reports/${data.report_id}`);
+      }
+    } catch (e: any) {
+      toast.error(e.message);
+    }
+    setBriefingLoading(false);
+    setBriefingStep(0);
+  };
+
   return (
     <AppLayout>
       <AnimatedPage className="space-y-6">
         {/* Header */}
         <AnimatedItem>
-          <h1 className="text-[28px] font-bold text-foreground">Welcome back, {firstName}</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Your {appName} command center is ready.
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-[28px] font-bold text-foreground">Welcome back, {firstName}</h1>
+              <p className="text-muted-foreground text-sm mt-1">
+                Your {appName} command center is ready.
+              </p>
+            </div>
+            <Button variant="outline" onClick={handleGenerateBriefing} disabled={briefingLoading}>
+              <Newspaper className="mr-1.5 h-4 w-4" />
+              Generate Weekly Briefing
+            </Button>
+          </div>
         </AnimatedItem>
 
         {/* Stat cards */}
@@ -129,6 +181,43 @@ export default function Index() {
           <AlertFeed alerts={dashboard.recentAlerts} loading={dashboard.isLoading} />
         </AnimatedItem>
       </AnimatedPage>
+
+      {/* Briefing loading overlay */}
+      <Dialog open={briefingLoading} onOpenChange={() => {}}>
+        <DialogContent className="bg-card border-border sm:max-w-md" onPointerDownOutside={(e) => e.preventDefault()}>
+          <div className="py-8 space-y-6">
+            <h3 className="text-lg font-semibold text-foreground text-center mb-6">Generating Executive Briefing</h3>
+            {briefingSteps.map((step, i) => {
+              const StepIcon = step.icon;
+              const status = i < briefingStep ? "done" : i === briefingStep ? "active" : "pending";
+              return (
+                <div key={i} className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
+                    status === "done" ? "bg-primary/10" :
+                    status === "active" ? "bg-primary/10 animate-pulse" :
+                    "bg-muted"
+                  }`}>
+                    {status === "done" ? (
+                      <CheckCircle2 className="h-4 w-4 text-primary" />
+                    ) : status === "active" ? (
+                      <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                    ) : (
+                      <Circle className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </div>
+                  <span className={`text-sm font-medium transition-colors ${
+                    status === "done" ? "text-primary" :
+                    status === "active" ? "text-foreground" :
+                    "text-muted-foreground"
+                  }`}>
+                    {step.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </DialogContent>
+      </Dialog>
     </AppLayout>
   );
 }

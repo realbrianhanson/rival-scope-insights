@@ -32,6 +32,7 @@ const reportTypeColors: Record<string, string> = {
   comparison: "bg-[hsl(44,100%,52%)]/10 text-[hsl(44,100%,52%)]",
   battlecard: "bg-[hsl(22,100%,60%)]/10 text-[hsl(22,100%,60%)]",
   review_sentiment: "bg-muted text-muted-foreground",
+  executive_briefing: "bg-[hsl(240,7%,95%)] text-[hsl(240,10%,4%)]",
 };
 
 const reportTypeLabels: Record<string, string> = {
@@ -41,6 +42,7 @@ const reportTypeLabels: Record<string, string> = {
   comparison: "Comparison",
   battlecard: "Battlecard",
   review_sentiment: "Review Sentiment",
+  executive_briefing: "Executive Briefing",
 };
 
 const priorityColors: Record<string, string> = {
@@ -202,6 +204,7 @@ export default function ReportDetail() {
           {report.report_type === "gap_analysis" && fullReport && <GapAnalysisSection report={fullReport} />}
           {report.report_type === "strengths_weaknesses" && fullReport && <StrengthsWeaknessesSection report={fullReport} />}
           {report.report_type === "review_sentiment" && fullReport && <ReviewSentimentSection report={fullReport} />}
+          {report.report_type === "executive_briefing" && fullReport && <ExecutiveBriefingSection report={fullReport} />}
         </AnimatedItem>
       </AnimatedPage>
     </AppLayout>
@@ -471,6 +474,130 @@ function TagCloud({ title, tags, color }: { title: string; tags: any[]; color: s
           </span>
         ))}
       </div>
+    </div>
+  );
+}
+
+// --- EXECUTIVE BRIEFING ---
+const threatScoreColor = (score: number) => {
+  if (score >= 76) return "text-destructive";
+  if (score >= 51) return "text-[hsl(22,100%,60%)]";
+  if (score >= 26) return "text-warning";
+  return "text-primary";
+};
+
+const briefingPriorityColors: Record<string, string> = {
+  high: "bg-[hsl(22,100%,60%)]/10 text-[hsl(22,100%,60%)]",
+  medium: "bg-warning/10 text-warning",
+  low: "bg-muted text-muted-foreground",
+};
+
+function ExecutiveBriefingSection({ report }: { report: any }) {
+  return (
+    <div className="space-y-8">
+      {/* Top Threats */}
+      {report.top_threats?.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Top Threats</h3>
+          {report.top_threats.map((t: any, i: number) => (
+            <div key={i} className="bg-card border border-border rounded-xl p-5 border-l-4 border-l-destructive">
+              <div className="flex items-center gap-3 mb-2">
+                <h4 className="text-sm font-semibold text-foreground">{t.competitor_name}</h4>
+                <span className={cn("font-mono text-sm font-bold", threatScoreColor(t.threat_score))}>
+                  {t.threat_score}/100
+                </span>
+              </div>
+              <p className="text-sm text-muted-foreground">{t.summary}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Key Changes */}
+      {report.key_changes?.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Key Changes This Week</h3>
+          <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+            {report.key_changes.map((c: any, i: number) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className="w-2 h-2 rounded-full bg-primary mt-1.5 flex-shrink-0" />
+                <div>
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <span className="text-sm font-semibold text-foreground">{c.competitor_name}</span>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full bg-accent/10 text-accent">
+                      {c.change_type}
+                    </span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{c.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Top Opportunities */}
+      {report.top_opportunities?.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Top Opportunities</h3>
+          {report.top_opportunities.map((o: any, i: number) => (
+            <div key={i} className="bg-card border border-border rounded-xl p-5 border-l-4 border-l-primary">
+              <div className="flex items-start gap-4">
+                <div className={cn("w-10 h-10 rounded-full border-2 flex items-center justify-center text-sm font-bold flex-shrink-0 text-primary border-current")}>
+                  {o.opportunity_score}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="text-sm font-semibold text-foreground">{o.title}</h4>
+                    <span className="text-xs text-muted-foreground">{o.competitor_name}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{o.recommendation}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Recommended Actions */}
+      {report.recommended_actions?.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Recommended Actions</h3>
+          {report.recommended_actions.map((a: any, i: number) => (
+            <div key={i} className="bg-card border border-border rounded-xl p-4">
+              <div className="flex items-center gap-3 mb-1.5">
+                <span className="text-sm font-mono font-bold text-muted-foreground w-6">{i + 1}.</span>
+                <span className={cn(
+                  "text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full",
+                  briefingPriorityColors[a.priority] || "bg-muted text-muted-foreground"
+                )}>
+                  {a.priority}
+                </span>
+                <p className="text-sm font-semibold text-foreground flex-1">{a.action}</p>
+              </div>
+              <p className="text-xs text-muted-foreground ml-9">{a.reasoning}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Market Outlook */}
+      {(report.competitive_landscape_summary || report.outlook) && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Market Outlook</h3>
+          <div className="bg-card border border-border rounded-xl p-6 border-l-4 border-l-[hsl(252,72%,64%)]">
+            {report.competitive_landscape_summary && (
+              <p className="text-sm text-foreground mb-3">{report.competitive_landscape_summary}</p>
+            )}
+            {report.outlook && (
+              <>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Next Week</p>
+                <p className="text-sm text-foreground">{report.outlook}</p>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
