@@ -49,6 +49,7 @@ export default function BattlecardDetail() {
   const { user } = useAuth();
   const { data: bc, isLoading, refetch } = useBattlecardDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const { exporting, exportPdf } = useExportPdf();
 
   const comp = bc?.competitors as any;
