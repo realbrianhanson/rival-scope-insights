@@ -18,7 +18,9 @@ import {
   X,
   Minus,
   HelpCircle,
+  Share2,
 } from "lucide-react";
+import { ShareLinkModal } from "@/components/ShareLinkModal";
 
 function StatusIcon({ status }: { status: string }) {
   switch (status) {
