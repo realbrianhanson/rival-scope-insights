@@ -10,6 +10,8 @@ import { Plus, Search, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useScanCompetitor } from "@/hooks/useScanCompetitor";
 import { useAuth } from "@/hooks/useAuth";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useAppSettings } from "@/hooks/useAppSettings";
 
 type FilterTab = "all" | "active" | "paused" | "archived";
 
