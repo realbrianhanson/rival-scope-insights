@@ -42,6 +42,7 @@ const reportTypeColors: Record<string, string> = {
   comparison: "bg-[hsl(44,100%,52%)]/10 text-[hsl(44,100%,52%)]",
   battlecard: "bg-[hsl(22,100%,60%)]/10 text-[hsl(22,100%,60%)]",
   review_sentiment: "bg-muted text-muted-foreground",
+  executive_briefing: "bg-[hsl(240,7%,95%)] text-[hsl(240,10%,4%)]",
 };
 
 const reportTypeLabels: Record<string, string> = {
@@ -51,6 +52,7 @@ const reportTypeLabels: Record<string, string> = {
   comparison: "Comparison",
   battlecard: "Battlecard",
   review_sentiment: "Review Sentiment",
+  executive_briefing: "Executive Briefing",
 };
 
 const analysisTypes = [
