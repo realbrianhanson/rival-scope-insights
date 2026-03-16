@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useUnreadAlertCount } from "@/hooks/useAlerts";
 
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -37,6 +38,7 @@ export function AppSidebar() {
   const { theme, toggleTheme } = useTheme();
   const { signOut } = useAuth();
   const { data: settings } = useAppSettings();
+  const { data: unreadCount } = useUnreadAlertCount();
   const [collapsed, setCollapsed] = useState(false);
 
   const appName = settings?.app_name || "RivalScope";
@@ -79,7 +81,12 @@ export function AppSidebar() {
               )}
             >
               <item.icon className="h-[18px] w-[18px] flex-shrink-0" />
-              {!collapsed && <span>{item.title}</span>}
+              {!collapsed && <span className="flex-1">{item.title}</span>}
+              {item.title === "Alerts" && !!unreadCount && unreadCount > 0 && (
+                <span className="text-[10px] font-semibold min-w-[18px] text-center px-1 py-0.5 rounded-full bg-primary text-primary-foreground">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              )}
             </Link>
           );
 
