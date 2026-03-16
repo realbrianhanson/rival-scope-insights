@@ -13,6 +13,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import StubPage from "./pages/StubPage";
+import Competitors from "./pages/Competitors";
 
 const queryClient = new QueryClient();
 
