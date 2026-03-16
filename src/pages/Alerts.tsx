@@ -328,7 +328,7 @@ function EmptyState() {
     <EmptyStateWrapper
       illustration={<BellSwingIllustration />}
       heading="No alerts yet"
-      subtext="Once you start scanning competitors, RivalScope will detect changes and alert you here."
+      subtext={`Once you start scanning competitors, ${appName} will detect changes and alert you here.`}
     />
   );
 }
