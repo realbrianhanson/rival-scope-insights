@@ -126,6 +126,16 @@ export default function CompetitorDetail() {
     latestSnapshot,
   } = useCompetitorDetail(id);
 
+  const { data: relatedSuggestions } = useCompetitorSuggestionsByCompetitor(id);
+  const dismissSuggestion = useDismissSuggestion();
+  const acceptSuggestion = useAcceptSuggestion();
+
+  const handleTrackSuggestion = (s: any) => {
+    setPrefill({ name: s.suggested_name, url: s.suggested_url });
+    acceptSuggestion.mutate(s.id);
+    setAddModalOpen(true);
+  };
+
   const comp = competitor.data;
   useDocumentTitle(comp?.name ? `${comp.name}` : "Competitor");
   const report = latestReport.data;
