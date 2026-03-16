@@ -6,6 +6,7 @@ import { useCompetitorDetail } from "@/hooks/useCompetitorDetail";
 import { useScanCompetitor } from "@/hooks/useScanCompetitor";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Accordion,
