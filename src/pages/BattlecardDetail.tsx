@@ -81,15 +81,12 @@ export default function BattlecardDetail() {
     );
   }
 
-  const strengths: string[] = Array.isArray(bc.their_strengths) ? bc.their_strengths : [];
-  const weaknesses: string[] = Array.isArray(bc.their_weaknesses) ? bc.their_weaknesses : [];
-  const counterPos: any[] = Array.isArray(bc.counter_positioning) ? bc.counter_positioning : [];
-  const talkTracks: string[] = Array.isArray(bc.talk_tracks) ? bc.talk_tracks : [];
-  const differentiators: string[] = Array.isArray(bc.key_differentiators) ? bc.key_differentiators : [];
+  const strengths = (Array.isArray(bc.their_strengths) ? bc.their_strengths : []) as string[];
+  const weaknesses = (Array.isArray(bc.their_weaknesses) ? bc.their_weaknesses : []) as string[];
+  const counterPos = (Array.isArray(bc.counter_positioning) ? bc.counter_positioning : []) as any[];
+  const talkTracks = (Array.isArray(bc.talk_tracks) ? bc.talk_tracks : []) as string[];
+  const differentiators = (Array.isArray(bc.key_differentiators) ? bc.key_differentiators : []) as string[];
   const pricing = bc.pricing_comparison as any;
-  // win_themes is not in the DB schema but may be in key_differentiators or counter_positioning
-  // We'll parse from the data if the AI included it
-  const winThemes: string[] = [];
 
   return (
     <AppLayout>
