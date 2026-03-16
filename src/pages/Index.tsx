@@ -31,6 +31,12 @@ const threatColor = (score: number) => {
   return "#00D4AA";
 };
 
+const briefingSteps = [
+  { label: "Gathering intelligence", icon: Database },
+  { label: "Analyzing threats", icon: Brain },
+  { label: "Building briefing", icon: FileText },
+];
+
 export default function Index() {
   const { data: settings } = useAppSettings();
   const { user } = useAuth();
@@ -40,15 +46,56 @@ export default function Index() {
   const navigate = useNavigate();
   const firstName = user?.user_metadata?.full_name?.split(" ")[0] || "there";
 
+  const [briefingLoading, setBriefingLoading] = useState(false);
+  const [briefingStep, setBriefingStep] = useState(0);
+
+  const handleGenerateBriefing = async () => {
+    if (!user) return;
+    setBriefingLoading(true);
+    setBriefingStep(0);
+
+    try {
+      const stepTimer1 = setTimeout(() => setBriefingStep(1), 3000);
+      const stepTimer2 = setTimeout(() => setBriefingStep(2), 6000);
+
+      const { data, error } = await supabase.functions.invoke("generate-executive-briefing", {
+        body: { user_id: user.id },
+      });
+
+      clearTimeout(stepTimer1);
+      clearTimeout(stepTimer2);
+
+      if (error) throw new Error(error.message);
+      if (!data?.success) throw new Error(data?.error || "Failed to generate briefing");
+
+      toast.success("Executive briefing generated!");
+      if (data?.report_id) {
+        navigate(`/reports/${data.report_id}`);
+      }
+    } catch (e: any) {
+      toast.error(e.message);
+    }
+    setBriefingLoading(false);
+    setBriefingStep(0);
+  };
+
   return (
     <AppLayout>
       <AnimatedPage className="space-y-6">
         {/* Header */}
         <AnimatedItem>
-          <h1 className="text-[28px] font-bold text-foreground">Welcome back, {firstName}</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Your {appName} command center is ready.
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-[28px] font-bold text-foreground">Welcome back, {firstName}</h1>
+              <p className="text-muted-foreground text-sm mt-1">
+                Your {appName} command center is ready.
+              </p>
+            </div>
+            <Button variant="outline" onClick={handleGenerateBriefing} disabled={briefingLoading}>
+              <Newspaper className="mr-1.5 h-4 w-4" />
+              Generate Weekly Briefing
+            </Button>
+          </div>
         </AnimatedItem>
 
         {/* Stat cards */}
