@@ -179,7 +179,14 @@ export default function Index() {
 
         {/* Bottom row */}
         <AnimatedItem>
-          <AlertFeed alerts={dashboard.recentAlerts} loading={dashboard.isLoading} />
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
+            <div className="lg:col-span-3">
+              <AlertFeed alerts={dashboard.recentAlerts} loading={dashboard.isLoading} />
+            </div>
+            <div className="lg:col-span-2">
+              <SuggestedCompetitors loading={dashboard.isLoading} />
+            </div>
+          </div>
         </AnimatedItem>
       </AnimatedPage>
 

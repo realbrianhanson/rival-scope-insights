@@ -37,8 +37,13 @@ import {
   Code,
   Clock,
   Database,
+  Compass,
+  Plus,
+  X,
 } from "lucide-react";
 import { ThreatScoreBadge, ThreatTrendIcon } from "@/components/dashboard/ThreatRadar";
+import { useCompetitorSuggestionsByCompetitor, useDismissSuggestion, useAcceptSuggestion } from "@/hooks/useCompetitorSuggestions";
+import { AddCompetitorModal } from "@/components/competitors/AddCompetitorModal";
 
 // --- Skeleton ---
 function TabSkeleton() {
