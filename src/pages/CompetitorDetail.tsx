@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { AppLayout } from "@/components/AppLayout";
 import { AnimatedPage, AnimatedItem } from "@/components/AnimatedPage";
 import { useCompetitorDetail } from "@/hooks/useCompetitorDetail";
