@@ -98,19 +98,13 @@ export default function Comparisons() {
               ))}
             </div>
           ) : !comparisons || comparisons.length === 0 ? (
-            <div className="bg-card border border-border rounded-xl p-12 text-center">
-              <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/[0.08] flex items-center justify-center mb-4">
-                <GitCompareArrows className="h-6 w-6 text-primary" />
-              </div>
-              <p className="text-sm font-medium text-foreground">No comparisons yet</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Select 2–5 competitors to generate a side-by-side matrix.
-              </p>
-              <Button size="sm" className="mt-4" onClick={() => setModalOpen(true)}>
-                <Plus className="mr-1.5 h-4 w-4" />
-                New Comparison
-              </Button>
-            </div>
+            <EmptyStateWrapper
+              illustration={<ComparisonBarsIllustration />}
+              heading="No comparisons created"
+              subtext="Select two or more competitors to generate a side-by-side feature matrix."
+              ctaLabel="New Comparison"
+              onCta={() => setModalOpen(true)}
+            />
           ) : (
             <div className="space-y-3">
               {comparisons.map((cm: any) => (

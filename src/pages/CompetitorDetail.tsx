@@ -646,9 +646,23 @@ export default function CompetitorDetail() {
 }
 
 // --- Helpers ---
+const tabEmptyConfig: Record<string, { icon: typeof Target; hint: string }> = {
+  overview: { icon: Brain, hint: "Run a scan to generate intelligence on this competitor." },
+  strengths: { icon: TrendingUp, hint: "This competitor hasn't been fully analyzed yet." },
+  gaps: { icon: Target, hint: "No gaps found for this competitor yet." },
+  pricing: { icon: Zap, hint: "Run a pricing scan to extract pricing data." },
+  reviews: { icon: MessageSquare, hint: "Add review source URLs and run a review scan." },
+  content: { icon: BarChart3, hint: "Run a full site scan to analyze their content strategy." },
+  history: { icon: Clock, hint: "No activity recorded for this competitor yet." },
+  raw: { icon: Database, hint: "Run a scan to collect data." },
+};
+
 function EmptyTab({ message, action }: { message: string; action: string }) {
   return (
-    <div className="bg-card border border-border rounded-xl p-12 text-center">
+    <div
+      className="bg-card border border-border rounded-xl p-12 text-center"
+      style={{ background: "radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.02), transparent 70%)" }}
+    >
       <p className="text-sm font-medium text-foreground">{message}</p>
       <p className="text-xs text-muted-foreground mt-1">{action}</p>
     </div>

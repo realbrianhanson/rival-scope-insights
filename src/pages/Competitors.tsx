@@ -152,32 +152,13 @@ export default function Competitors() {
               ))}
             </div>
           ) : competitors && competitors.length === 0 ? (
-            <div className="relative bg-card border border-border rounded-2xl p-12 text-center overflow-hidden">
-              <div className="absolute inset-0 opacity-[0.03]">
-                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <pattern id="comp-grid" width="60" height="60" patternUnits="userSpaceOnUse">
-                      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" strokeWidth="1" />
-                    </pattern>
-                  </defs>
-                  <rect width="100%" height="100%" fill="url(#comp-grid)" />
-                </svg>
-              </div>
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.04),transparent_70%)]" />
-              <div className="relative z-10 space-y-4">
-                <div className="mx-auto w-16 h-16 rounded-2xl bg-primary/[0.08] flex items-center justify-center">
-                  <Users className="h-7 w-7 text-primary" />
-                </div>
-                <h2 className="text-xl font-semibold text-foreground">Track your first competitor</h2>
-                <p className="text-muted-foreground text-sm max-w-md mx-auto">
-                  Add a competitor's website and {appName} will scrape, analyze, and monitor them for you.
-                </p>
-                <Button onClick={() => setModalOpen(true)} className="mt-2">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Your First Competitor
-                </Button>
-              </div>
-            </div>
+            <EmptyStateWrapper
+              illustration={<CrosshairIllustration />}
+              heading="No competitors in your sights"
+              subtext={`Add a competitor's website and ${appName} will scrape, analyze, and monitor them for you.`}
+              ctaLabel="Add Your First Competitor"
+              onCta={() => setModalOpen(true)}
+            />
           ) : filtered.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-muted-foreground text-sm">No competitors match your filters.</p>

@@ -325,22 +325,10 @@ export default function AlertsPage() {
 
 function EmptyState() {
   return (
-    <div className="bg-card border border-border rounded-xl p-12 text-center">
-      <div className="mx-auto w-20 h-20 relative flex items-center justify-center mb-6">
-        {/* Radar pulse animation */}
-        <div className="absolute inset-0 rounded-full border-2 border-primary/20 animate-ping" />
-        <div
-          className="absolute inset-2 rounded-full border border-primary/30 animate-ping"
-          style={{ animationDelay: "0.5s" }}
-        />
-        <div className="relative w-12 h-12 rounded-full bg-primary/[0.08] flex items-center justify-center">
-          <Bell className="h-5 w-5 text-primary" />
-        </div>
-      </div>
-      <p className="text-sm font-medium text-foreground mb-1">No alerts yet</p>
-      <p className="text-xs text-muted-foreground max-w-md mx-auto">
-        Once you start scanning competitors, changes will be detected and alerted here.
-      </p>
-    </div>
+    <EmptyStateWrapper
+      illustration={<BellSwingIllustration />}
+      heading="No alerts yet"
+      subtext="Once you start scanning competitors, RivalScope will detect changes and alert you here."
+    />
   );
 }
