@@ -119,6 +119,7 @@ export default function CompetitorDetail() {
   } = useCompetitorDetail(id);
 
   const comp = competitor.data;
+  useDocumentTitle(comp?.name ? `${comp.name}` : "Competitor");
   const report = latestReport.data;
   const fullReport = report?.full_report as any;
 

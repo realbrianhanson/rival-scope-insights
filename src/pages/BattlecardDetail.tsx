@@ -48,6 +48,7 @@ export default function BattlecardDetail() {
   const [regenerating, setRegenerating] = useState(false);
 
   const comp = bc?.competitors as any;
+  useDocumentTitle(comp?.name ? `Battlecard: ${comp.name}` : "Battlecard");
 
   const handleRegenerate = async () => {
     if (!user || !bc) return;
