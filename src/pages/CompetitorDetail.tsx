@@ -38,6 +38,7 @@ import {
   Clock,
   Database,
 } from "lucide-react";
+import { ThreatScoreBadge, ThreatTrendIcon } from "@/components/dashboard/ThreatRadar";
 
 // --- Skeleton ---
 function TabSkeleton() {
