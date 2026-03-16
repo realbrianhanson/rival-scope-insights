@@ -29,13 +29,9 @@ import { formatDistanceToNow } from "date-fns";
 import {
   Plus,
   FileText,
-  Loader2,
-  CheckCircle2,
-  Circle,
   Search,
-  Brain,
-  Database,
 } from "lucide-react";
+import { AnalysisProgress, STEP_CONFIGS } from "@/components/AnalysisProgress";
 
 const reportTypeColors: Record<string, string> = {
   full_intel: "bg-[hsl(164,100%,42%)]/10 text-[hsl(164,100%,42%)]",
