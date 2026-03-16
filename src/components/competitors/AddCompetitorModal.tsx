@@ -52,9 +52,11 @@ interface AddCompetitorModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   defaultIndustry?: string;
+  defaultName?: string;
+  defaultUrl?: string;
 }
 
-export function AddCompetitorModal({ open, onOpenChange, defaultIndustry }: AddCompetitorModalProps) {
+export function AddCompetitorModal({ open, onOpenChange, defaultIndustry, defaultName, defaultUrl }: AddCompetitorModalProps) {
   const addCompetitor = useAddCompetitor();
   const [reviewsOpen, setReviewsOpen] = useState(false);
 
@@ -66,6 +68,8 @@ export function AddCompetitorModal({ open, onOpenChange, defaultIndustry }: AddC
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
+      name: defaultName || "",
+      website_url: defaultUrl || "",
       industry: defaultIndustry || "",
     },
   });
