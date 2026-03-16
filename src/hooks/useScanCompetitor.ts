@@ -94,5 +94,13 @@ export function useScanCompetitor() {
     [queryClient]
   );
 
+  useEffect(() => {
+    return () => {
+      // Clean up all active polling intervals on unmount
+      Object.values(pollRefs.current).forEach(clearInterval);
+      pollRefs.current = {};
+    };
+  }, []);
+
   return { startScan, getPhase };
 }
