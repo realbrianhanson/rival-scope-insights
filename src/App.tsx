@@ -15,6 +15,8 @@ import NotFound from "./pages/NotFound";
 import StubPage from "./pages/StubPage";
 import Competitors from "./pages/Competitors";
 import CompetitorDetail from "./pages/CompetitorDetail";
+import Reports from "./pages/Reports";
+import ReportDetail from "./pages/ReportDetail";
 
 const queryClient = new QueryClient();
 
