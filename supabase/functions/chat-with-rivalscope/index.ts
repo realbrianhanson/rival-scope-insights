@@ -22,12 +22,13 @@ serve(async (req) => {
     if (!user_id || !message) throw new Error("user_id and message are required");
 
     // Step 1: Gather context
-    const [profileRes, competitorsRes, reportsRes, gapsRes, alertsRes] = await Promise.all([
+    const [profileRes, competitorsRes, reportsRes, gapsRes, alertsRes, settingsRes] = await Promise.all([
       supabase.from("profiles").select("company_name, industry").eq("id", user_id).single(),
       supabase.from("competitors").select("id, name, website_url, status").eq("user_id", user_id),
       supabase.from("analysis_reports").select("title, summary, report_type, created_at").eq("user_id", user_id).order("created_at", { ascending: false }).limit(3),
       supabase.from("market_gaps").select("gap_title, gap_description, gap_category, opportunity_score, evidence").eq("user_id", user_id).order("opportunity_score", { ascending: false }).limit(10),
       supabase.from("alerts").select("title, description, alert_type, created_at").eq("user_id", user_id).order("created_at", { ascending: false }).limit(5),
+      supabase.from("app_settings").select("app_name").eq("user_id", user_id).maybeSingle(),
     ]);
 
     const profile = profileRes.data;
