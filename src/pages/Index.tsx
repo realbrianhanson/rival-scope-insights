@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AppLayout } from "@/components/AppLayout";
 import { AnimatedPage, AnimatedItem } from "@/components/AnimatedPage";
 import { useAppSettings } from "@/hooks/useAppSettings";
@@ -9,8 +10,12 @@ import { RecentReports } from "@/components/dashboard/RecentReports";
 import { TopOpportunities } from "@/components/dashboard/TopOpportunities";
 import { AlertFeed } from "@/components/dashboard/AlertFeed";
 import { ThreatRadar } from "@/components/dashboard/ThreatRadar";
-import { Target, TrendingUp, Zap, Bell, ShieldAlert } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Target, TrendingUp, Zap, Bell, ShieldAlert, Newspaper, Loader2, CheckCircle2, Circle, Brain, Database, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const scoreColor = (score: number) => {
   if (score >= 9) return "#FF6B35";
