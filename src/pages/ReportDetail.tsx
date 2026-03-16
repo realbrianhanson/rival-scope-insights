@@ -85,6 +85,7 @@ export default function ReportDetail() {
   const { user } = useAuth();
   const { data: report, isLoading, refetch } = useReportDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  const { exporting, exportPdf } = useExportPdf();
   useDocumentTitle(report?.title || "Report");
 
   const fullReport = report?.full_report as any;
