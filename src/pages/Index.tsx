@@ -17,29 +17,10 @@ import { Sparkline } from "@/components/dashboard/Sparkline";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Target, TrendingUp, Zap, Bell, ShieldAlert, Newspaper, Loader2, CheckCircle2, Circle, Brain, Database, FileText } from "lucide-react";
+import { Target, TrendingUp, Zap, Bell, ShieldAlert, Newspaper, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-
-const scoreColor = (score: number) => {
-  if (score >= 9) return "#FF6B35";
-  if (score >= 7) return "hsl(164, 100%, 42%)";
-  if (score >= 4) return "#FFBE0B";
-  return undefined;
-};
-
-const threatColor = (score: number) => {
-  if (score >= 76) return "#FF4757";
-  if (score >= 51) return "#FF6B35";
-  if (score >= 26) return "#FFBE0B";
-  return "#00D4AA";
-};
-
-const briefingSteps = [
-  { label: "Gathering intelligence", icon: Database },
-  { label: "Analyzing threats", icon: Brain },
-  { label: "Building briefing", icon: FileText },
-];
+import { AnalysisProgress, STEP_CONFIGS } from "@/components/AnalysisProgress";
 
 export default function Index() {
   const { data: settings } = useAppSettings();
