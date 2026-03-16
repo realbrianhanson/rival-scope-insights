@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { Target, List, LayoutGrid, ChevronDown } from "lucide-react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 // --- types ---
 type Gap = any;
@@ -60,6 +61,7 @@ function ScoreCircle({ score, size = "md" }: { score: number; size?: "sm" | "md"
 }
 
 export default function MarketGaps() {
+  useDocumentTitle("Market Gaps");
   const { data: gaps, isLoading } = useMarketGaps();
   const { data: competitors } = useCompetitors();
   const updateStatus = useUpdateGapStatus();

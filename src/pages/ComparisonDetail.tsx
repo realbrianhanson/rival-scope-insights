@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { format } from "date-fns";
 import {
   ArrowLeft,
@@ -54,6 +55,7 @@ export default function ComparisonDetail() {
   const { user } = useAuth();
   const { data: matrix, isLoading, refetch } = useComparisonDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  useDocumentTitle(matrix?.title || "Comparison");
 
   const handleRegenerate = async () => {
     if (!user || !matrix) return;

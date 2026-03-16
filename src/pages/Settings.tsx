@@ -31,6 +31,7 @@ import {
   Moon,
   Info,
 } from "lucide-react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 const INDUSTRIES = [
   "SaaS", "E-commerce", "Fintech", "Healthcare", "EdTech",
@@ -39,6 +40,7 @@ const INDUSTRIES = [
 ];
 
 export default function SettingsPage() {
+  useDocumentTitle("Settings");
   return (
     <AppLayout>
       <AnimatedPage className="space-y-6">

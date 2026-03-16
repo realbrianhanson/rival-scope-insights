@@ -5,9 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { useAppSettings } from "@/hooks/useAppSettings";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { motion } from "framer-motion";
 
 export default function ForgotPassword() {
+  const { data: settings } = useAppSettings();
+  const appName = settings?.app_name || "RivalScope";
+  useDocumentTitle("Forgot Password");
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -30,7 +35,7 @@ export default function ForgotPassword() {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md mx-4">
         <div className="text-center mb-8">
-          <h1 className="font-display text-3xl text-foreground" style={{ letterSpacing: "-0.02em" }}>RivalScope</h1>
+          <h1 className="font-display text-3xl text-foreground" style={{ letterSpacing: "-0.02em" }}>{appName}</h1>
         </div>
         <div className="bg-card border border-border rounded-2xl p-8 shadow-card">
           <h2 className="text-lg font-semibold mb-4 text-foreground">Reset your password</h2>

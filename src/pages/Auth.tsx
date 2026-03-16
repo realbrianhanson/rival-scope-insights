@@ -7,10 +7,15 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useAppSettings } from "@/hooks/useAppSettings";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { motion } from "framer-motion";
 
 export default function Auth() {
   const { session, loading } = useAuth();
+  const { data: settings } = useAppSettings();
+  const appName = settings?.app_name || "RivalScope";
+  useDocumentTitle("Sign In");
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -77,7 +82,7 @@ export default function Auth() {
         {/* Logo */}
         <div className="text-center mb-8">
           <h1 className="font-display text-4xl text-foreground tracking-tight" style={{ letterSpacing: "-0.02em" }}>
-            RivalScope
+            {appName}
           </h1>
           <p className="text-muted-foreground text-sm mt-2">Competitive intelligence, simplified.</p>
         </div>

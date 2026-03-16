@@ -33,6 +33,8 @@ import {
   Trash2,
   Loader2,
 } from "lucide-react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useAppSettings } from "@/hooks/useAppSettings";
 
 const PAGE_SIZE = 20;
 
@@ -54,6 +56,9 @@ const typeConfig: Record<string, { icon: typeof Bell; color: string }> = {
 };
 
 export default function AlertsPage() {
+  useDocumentTitle("Alerts");
+  const { data: appSettings } = useAppSettings();
+  const appName = appSettings?.app_name || "RivalScope";
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -332,7 +337,7 @@ function EmptyState() {
       </div>
       <p className="text-sm font-medium text-foreground mb-1">No alerts yet</p>
       <p className="text-xs text-muted-foreground max-w-md mx-auto">
-        Once you start scanning competitors, RivalScope will detect changes and alert you here.
+        Once you start scanning competitors, changes will be detected and alerted here.
       </p>
     </div>
   );

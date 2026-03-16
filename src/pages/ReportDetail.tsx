@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { useState } from "react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import {
   ArrowLeft,
   RefreshCw,
@@ -82,6 +83,7 @@ export default function ReportDetail() {
   const { user } = useAuth();
   const { data: report, isLoading, refetch } = useReportDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  useDocumentTitle(report?.title || "Report");
 
   const fullReport = report?.full_report as any;
   const comp = report?.competitors as any;

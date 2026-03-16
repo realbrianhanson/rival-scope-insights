@@ -19,8 +19,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 import { Plus, GitCompareArrows, Loader2 } from "lucide-react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export default function Comparisons() {
+  useDocumentTitle("Comparisons");
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data: comparisons, isLoading, refetch } = useComparisons();

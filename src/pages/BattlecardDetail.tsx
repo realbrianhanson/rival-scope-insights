@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { format } from "date-fns";
 import {
   ArrowLeft,
@@ -47,6 +48,7 @@ export default function BattlecardDetail() {
   const [regenerating, setRegenerating] = useState(false);
 
   const comp = bc?.competitors as any;
+  useDocumentTitle(comp?.name ? `Battlecard: ${comp.name}` : "Battlecard");
 
   const handleRegenerate = async () => {
     if (!user || !bc) return;

@@ -5,6 +5,7 @@ import { AnimatedPage, AnimatedItem } from "@/components/AnimatedPage";
 import { useReports } from "@/hooks/useReports";
 import { useCompetitors } from "@/hooks/useCompetitors";
 import { useAuth } from "@/hooks/useAuth";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -66,6 +67,7 @@ const progressSteps = [
 ];
 
 export default function Reports() {
+  useDocumentTitle("Reports");
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data: competitors } = useCompetitors();

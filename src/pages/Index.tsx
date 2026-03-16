@@ -2,6 +2,7 @@ import { AppLayout } from "@/components/AppLayout";
 import { AnimatedPage, AnimatedItem } from "@/components/AnimatedPage";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useAuth } from "@/hooks/useAuth";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { RecentReports } from "@/components/dashboard/RecentReports";
@@ -22,6 +23,7 @@ export default function Index() {
   const { user } = useAuth();
   const dashboard = useDashboardData();
   const appName = settings?.app_name || "RivalScope";
+  useDocumentTitle("Dashboard");
   const firstName = user?.user_metadata?.full_name?.split(" ")[0] || "there";
 
   return (

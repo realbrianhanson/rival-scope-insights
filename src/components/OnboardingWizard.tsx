@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useAppSettings } from "@/hooks/useAppSettings";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,8 @@ const TOTAL_STEPS = 4;
 
 export default function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
   const { user } = useAuth();
+  const { data: appSettings } = useAppSettings();
+  const appName = appSettings?.app_name || "RivalScope";
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [step, setStep] = useState(1);
@@ -93,7 +96,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
         body: { competitor_id: createdCompetitorId, user_id: user.id, job_type: "full_site" },
       });
       supabase.functions.invoke("analyze-competitor", {
-        body: { competitor_id: createdCompetitorId, user_id: user.id, report_type: "full_intel" },
+        body: { competitor_id: createdCompetitorId, user_id: user.id, analysis_type: "full_intel" },
       });
       toast.success("Scanning started! Your first report will be ready shortly.");
     } catch {
@@ -137,10 +140,10 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
             {step === 1 && (
               <div className="text-center space-y-6">
                 <h1 className="font-display text-4xl text-foreground tracking-tight" style={{ letterSpacing: "-0.02em" }}>
-                  RivalScope
+                  {appName}
                 </h1>
                 <div>
-                  <h2 className="text-xl font-bold text-foreground">Welcome to RivalScope</h2>
+                  <h2 className="text-xl font-bold text-foreground">Welcome to {appName}</h2>
                   <p className="text-sm text-muted-foreground mt-2">
                     Let's set up your competitive intelligence command center in 60 seconds.
                   </p>

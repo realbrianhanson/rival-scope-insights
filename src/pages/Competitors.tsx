@@ -10,6 +10,8 @@ import { Plus, Search, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useScanCompetitor } from "@/hooks/useScanCompetitor";
 import { useAuth } from "@/hooks/useAuth";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useAppSettings } from "@/hooks/useAppSettings";
 
 type FilterTab = "all" | "active" | "paused" | "archived";
 
@@ -22,6 +24,9 @@ const tabs: { key: FilterTab; label: string }[] = [
 
 export default function Competitors() {
   const { user } = useAuth();
+  const { data: appSettings } = useAppSettings();
+  const appName = appSettings?.app_name || "RivalScope";
+  useDocumentTitle("Competitors");
   const { data: competitors, isLoading } = useCompetitors();
   const { data: lastAnalyzedMap } = useLastAnalyzedMap();
   const [modalOpen, setModalOpen] = useState(false);
@@ -146,7 +151,7 @@ export default function Competitors() {
                 </div>
                 <h2 className="text-xl font-semibold text-foreground">Track your first competitor</h2>
                 <p className="text-muted-foreground text-sm max-w-md mx-auto">
-                  Add a competitor's website and RivalScope will scrape, analyze, and monitor them for you.
+                  Add a competitor's website and {appName} will scrape, analyze, and monitor them for you.
                 </p>
                 <Button onClick={() => setModalOpen(true)} className="mt-2">
                   <Plus className="mr-2 h-4 w-4" />
