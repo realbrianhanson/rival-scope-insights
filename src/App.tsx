@@ -22,6 +22,7 @@ import BattlecardDetail from "./pages/BattlecardDetail";
 import MarketGapsPage from "./pages/MarketGaps";
 import ComparisonsPage from "./pages/Comparisons";
 import ComparisonDetail from "./pages/ComparisonDetail";
+import AlertsPage from "./pages/Alerts";
 
 const queryClient = new QueryClient();
 
