@@ -60,11 +60,6 @@ const analysisTypes = [
   { value: "review_sentiment", label: "Review Sentiment Analysis" },
 ];
 
-const progressSteps = [
-  { label: "Gathering data", icon: Database },
-  { label: "Analyzing content", icon: Brain },
-  { label: "Building report", icon: FileText },
-];
 
 export default function Reports() {
   useDocumentTitle("Reports");
