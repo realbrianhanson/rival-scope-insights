@@ -22,7 +22,20 @@ import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { AnalysisProgress, STEP_CONFIGS } from "@/components/AnalysisProgress";
 
-export default function Index() {
+const scoreColor = (score: number) => {
+  if (score >= 9) return "#FF6B35";
+  if (score >= 7) return "hsl(164, 100%, 42%)";
+  if (score >= 4) return "#FFBE0B";
+  return undefined;
+};
+
+const threatColor = (score: number) => {
+  if (score >= 76) return "#FF4757";
+  if (score >= 51) return "#FF6B35";
+  if (score >= 26) return "#FFBE0B";
+  return "#00D4AA";
+};
+
   const { data: settings } = useAppSettings();
   const { user } = useAuth();
   const dashboard = useDashboardData();
