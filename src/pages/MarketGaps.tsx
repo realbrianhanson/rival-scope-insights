@@ -19,6 +19,8 @@ import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { Target, List, LayoutGrid, ChevronDown } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
+import { MountainFlagIllustration } from "@/components/empty-states/MountainFlagIllustration";
 
 // --- types ---
 type Gap = any;
@@ -222,13 +224,13 @@ export default function MarketGaps() {
               ))}
             </div>
           ) : filtered.length === 0 ? (
-            <div className="bg-card border border-border rounded-xl p-12 text-center">
-              <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/[0.08] flex items-center justify-center mb-4">
-                <Target className="h-6 w-6 text-primary" />
-              </div>
-              <p className="text-sm font-medium text-foreground">No market gaps found</p>
-              <p className="text-xs text-muted-foreground mt-1">Run competitor analyses to discover market opportunities.</p>
-            </div>
+            <EmptyStateWrapper
+              illustration={<MountainFlagIllustration />}
+              heading="No market gaps discovered"
+              subtext="Analyze competitors to uncover opportunities they're missing."
+              ctaLabel="Analyze a Competitor"
+              onCta={() => {}}
+            />
           ) : view === "list" ? (
             <ListView
               gaps={filtered}

@@ -11,8 +11,10 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
-import { Shield, Search, Loader2, Zap } from "lucide-react";
+import { Search, Loader2, Zap } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
+import { ShieldAssembleIllustration } from "@/components/empty-states/ShieldAssembleIllustration";
 
 export default function Battlecards() {
   useDocumentTitle("Battlecards");
@@ -97,13 +99,18 @@ export default function Battlecards() {
               ))}
             </div>
           ) : filteredCards.length === 0 && filteredWithout.length === 0 ? (
-            <div className="bg-card border border-border rounded-xl p-12 text-center">
-              <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/[0.08] flex items-center justify-center mb-4">
-                <Shield className="h-6 w-6 text-primary" />
-              </div>
-              <p className="text-sm font-medium text-foreground">No battlecards yet</p>
-              <p className="text-xs text-muted-foreground mt-1">Add competitors and run analysis to generate battlecards.</p>
-            </div>
+            <EmptyStateWrapper
+              illustration={<ShieldAssembleIllustration />}
+              heading="No battlecards yet"
+              subtext="Generate a battlecard to arm your team with competitor counter-positioning."
+              ctaLabel="Generate Battlecard"
+              onCta={() => {
+                if (competitors && competitors.length > 0) {
+                  const active = competitors.find(c => c.status === "active");
+                  if (active) handleGenerate(active.id);
+                }
+              }}
+            />
           ) : (
             <div className="space-y-8">
               {/* Existing battlecards */}

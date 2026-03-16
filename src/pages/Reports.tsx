@@ -7,6 +7,8 @@ import { useCompetitors } from "@/hooks/useCompetitors";
 import { useAuth } from "@/hooks/useAuth";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { Button } from "@/components/ui/button";
+import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
+import { DocumentDrawIllustration } from "@/components/empty-states/DocumentDrawIllustration";
 import {
   Select,
   SelectContent,
@@ -208,17 +210,13 @@ export default function Reports() {
               ))}
             </div>
           ) : !reports || reports.length === 0 ? (
-            <div className="bg-card border border-border rounded-xl p-12 text-center">
-              <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/[0.08] flex items-center justify-center mb-4">
-                <FileText className="h-6 w-6 text-primary" />
-              </div>
-              <p className="text-sm font-medium text-foreground">No reports yet</p>
-              <p className="text-xs text-muted-foreground mt-1">Generate your first intelligence report.</p>
-              <Button size="sm" className="mt-4" onClick={() => setModalOpen(true)}>
-                <Plus className="mr-1.5 h-4 w-4" />
-                Generate Report
-              </Button>
-            </div>
+            <EmptyStateWrapper
+              illustration={<DocumentDrawIllustration />}
+              heading="No reports generated yet"
+              subtext="Run a competitor analysis to generate your first intelligence report."
+              ctaLabel="Generate Report"
+              onCta={() => setModalOpen(true)}
+            />
           ) : (
             <div className="space-y-3">
               {reports.map((report: any) => (
