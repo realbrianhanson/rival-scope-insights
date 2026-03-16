@@ -291,6 +291,24 @@ export default function CompetitorDetail() {
                     <StatBox label="Market Gaps" value={gaps.length} icon={Target} />
                     <StatBox label="Avg Opportunity" value={avgScore} icon={Zap} />
                   </div>
+                  {/* Threat Assessment */}
+                  {(comp as any).threat_score != null && (
+                    <div className="bg-card border border-border rounded-xl p-6 border-l-4 border-l-warning">
+                      <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Threat Assessment</h3>
+                      <div className="flex items-center gap-4 flex-wrap">
+                        <ThreatScoreBadge score={(comp as any).threat_score} level={(comp as any).threat_level} size="lg" />
+                        {latestSnapshot.data && (latestSnapshot.data as any).threat_trend && (
+                          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                            <ThreatTrendIcon trend={(latestSnapshot.data as any).threat_trend} />
+                            <span className="capitalize">{(latestSnapshot.data as any).threat_trend}</span>
+                          </div>
+                        )}
+                      </div>
+                      {latestSnapshot.data && (latestSnapshot.data as any).threat_reason && (
+                        <p className="text-sm text-foreground mt-3">{(latestSnapshot.data as any).threat_reason}</p>
+                      )}
+                    </div>
+                  )}
                   {techStack.length > 0 && (
                     <div className="bg-card border border-border rounded-xl p-6">
                       <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Detected Tech Stack</h3>
