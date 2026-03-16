@@ -66,11 +66,13 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
-      {/* Gradient mesh background */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/10 blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/3 w-80 h-80 rounded-full bg-accent/10 blur-[100px]" />
+    <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden noise-overlay">
+      {/* Animated gradient mesh background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[20%] left-[15%] w-[500px] h-[500px] rounded-full blur-[140px] mesh-circle-1" style={{ background: 'hsl(164 100% 42% / 0.08)' }} />
+        <div className="absolute bottom-[15%] right-[20%] w-[450px] h-[450px] rounded-full blur-[130px] mesh-circle-2" style={{ background: 'hsl(252 58% 64% / 0.06)' }} />
+        <div className="absolute top-[50%] right-[10%] w-[400px] h-[400px] rounded-full blur-[120px] mesh-circle-3" style={{ background: 'hsl(22 100% 60% / 0.04)' }} />
+        <div className="absolute bottom-[30%] left-[30%] w-[350px] h-[350px] rounded-full blur-[110px] mesh-circle-4" style={{ background: 'hsl(164 100% 42% / 0.05)' }} />
       </div>
 
       <motion.div
@@ -87,8 +89,8 @@ export default function Auth() {
           <p className="text-muted-foreground text-sm mt-2">Competitive intelligence, simplified.</p>
         </div>
 
-        {/* Auth card */}
-        <div className="bg-card border border-border rounded-2xl p-8 shadow-card">
+        {/* Auth card — glassmorphism */}
+        <div className="glass-card rounded-2xl p-8 shadow-card">
           <h2 className="text-lg font-semibold text-foreground mb-6">
             {isSignUp ? "Create your account" : "Welcome back"}
           </h2>
@@ -114,7 +116,7 @@ export default function Auth() {
               <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-card px-3 text-xs uppercase tracking-widest text-muted-foreground">or</span>
+              <span className="bg-transparent px-3 text-xs uppercase tracking-widest text-muted-foreground backdrop-blur-sm">or</span>
             </div>
           </div>
 
@@ -140,7 +142,7 @@ export default function Auth() {
               </Link>
             )}
 
-            <Button type="submit" className="w-full h-11 font-semibold" disabled={submitting}>
+            <Button type="submit" className="w-full h-11 font-semibold btn-shimmer" disabled={submitting}>
               {submitting ? "..." : isSignUp ? "Create Account" : "Sign In"}
             </Button>
           </form>

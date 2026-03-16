@@ -86,7 +86,7 @@ export function AppSidebar({ onOpenPalette }: { onOpenPalette?: () => void }) {
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
                 active
-                  ? "text-foreground bg-primary/[0.06] border-l-[3px] border-primary"
+                  ? "text-foreground bg-primary/[0.06] border-l-[3px] border-primary nav-active-glow"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-[3px] border-transparent"
               )}
             >
