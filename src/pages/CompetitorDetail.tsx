@@ -336,6 +336,48 @@ export default function CompetitorDetail() {
                       </div>
                     </div>
                   )}
+                  {/* Related Competitors */}
+                  {relatedSuggestions && relatedSuggestions.length > 0 && (
+                    <div className="bg-card border border-border rounded-xl p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Compass className="h-4 w-4 text-primary" />
+                        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Related Competitors</h3>
+                      </div>
+                      <div className="space-y-3">
+                        {relatedSuggestions.map((s: any) => {
+                          const relevanceColors: Record<string, string> = {
+                            direct_competitor: "bg-destructive/10 text-destructive",
+                            indirect_competitor: "bg-warning/10 text-warning",
+                            emerging_threat: "bg-[hsl(22,100%,60%)]/10 text-[hsl(22,100%,60%)]",
+                            adjacent_market: "bg-accent/10 text-accent",
+                          };
+                          return (
+                            <div key={s.id} className="flex items-start justify-between gap-2">
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="text-sm font-semibold text-foreground">{s.suggested_name}</span>
+                                  <span className={cn(
+                                    "text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full",
+                                    relevanceColors[s.relevance] || "bg-muted text-muted-foreground"
+                                  )}>{s.relevance?.replace(/_/g, " ")}</span>
+                                </div>
+                                <p className="text-xs font-mono text-muted-foreground mt-0.5">{s.suggested_url}</p>
+                                <p className="text-xs text-muted-foreground mt-1">{s.reason}</p>
+                              </div>
+                              <div className="flex gap-1.5 flex-shrink-0">
+                                <Button size="sm" className="h-7 text-xs px-2.5" onClick={() => handleTrackSuggestion(s)}>
+                                  <Plus className="h-3 w-3 mr-1" />Track
+                                </Button>
+                                <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => dismissSuggestion.mutate(s.id)}>
+                                  <X className="h-3.5 w-3.5" />
+                                </Button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </TabsContent>
