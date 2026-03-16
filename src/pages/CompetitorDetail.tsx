@@ -631,6 +631,16 @@ export default function CompetitorDetail() {
           </Tabs>
         </AnimatedItem>
       </AnimatedPage>
+
+      <AddCompetitorModal
+        open={addModalOpen}
+        onOpenChange={(open) => {
+          setAddModalOpen(open);
+          if (!open) setPrefill(null);
+        }}
+        defaultName={prefill?.name}
+        defaultUrl={prefill?.url}
+      />
     </AppLayout>
   );
 }
