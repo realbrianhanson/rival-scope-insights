@@ -54,7 +54,7 @@ const App = () => (
               <Route path="/market-gaps" element={<ProtectedRoute><MarketGapsPage /></ProtectedRoute>} />
               <Route path="/comparisons" element={<ProtectedRoute><ComparisonsPage /></ProtectedRoute>} />
               <Route path="/comparisons/:id" element={<ProtectedRoute><ComparisonDetail /></ProtectedRoute>} />
-              <Route path="/alerts" element={<ProtectedRoute><StubPage title="Alerts" description="Real-time competitive movement alerts." icon={Bell} /></ProtectedRoute>} />
+              <Route path="/alerts" element={<ProtectedRoute><AlertsPage /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute><StubPage title="Settings" description="Manage your account and app configuration." icon={Settings} /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>

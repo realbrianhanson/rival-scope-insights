@@ -13,6 +13,7 @@ const items = [
 
 export function MobileNav() {
   const location = useLocation();
+  const { data: unreadCount } = useUnreadAlertCount();
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border flex justify-around py-2 px-1">
       {items.map((item) => {
@@ -22,12 +23,17 @@ export function MobileNav() {
             key={item.title}
             to={item.url}
             className={cn(
-              "flex flex-col items-center gap-0.5 px-2 py-1 text-[10px] font-medium transition-colors",
+              "flex flex-col items-center gap-0.5 px-2 py-1 text-[10px] font-medium transition-colors relative",
               active ? "text-primary" : "text-muted-foreground"
             )}
           >
             <item.icon className="h-5 w-5" />
             {item.title}
+            {item.title === "Alerts" && !!unreadCount && unreadCount > 0 && (
+              <span className="absolute -top-0.5 right-0 text-[8px] font-bold min-w-[14px] text-center px-0.5 rounded-full bg-primary text-primary-foreground">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            )}
           </Link>
         );
       })}
