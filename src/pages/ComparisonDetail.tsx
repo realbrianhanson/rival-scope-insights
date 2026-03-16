@@ -157,14 +157,20 @@ export default function ComparisonDetail() {
                 Generated {format(new Date(matrix.created_at), "MMM d, yyyy 'at' h:mm a")}
               </p>
             </div>
-            <Button size="sm" variant="outline" onClick={handleRegenerate} disabled={regenerating}>
-              {regenerating ? (
-                <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
-              ) : (
-                <RefreshCw className="mr-1.5 h-4 w-4" />
-              )}
-              Regenerate
-            </Button>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" onClick={() => setShareOpen(true)}>
+                <Share2 className="mr-1.5 h-4 w-4" />
+                Share
+              </Button>
+              <Button size="sm" variant="outline" onClick={handleRegenerate} disabled={regenerating}>
+                {regenerating ? (
+                  <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="mr-1.5 h-4 w-4" />
+                )}
+                Regenerate
+              </Button>
+            </div>
           </div>
         </AnimatedItem>
 
