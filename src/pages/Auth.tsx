@@ -13,6 +13,9 @@ import { motion } from "framer-motion";
 
 export default function Auth() {
   const { session, loading } = useAuth();
+  const { data: settings } = useAppSettings();
+  const appName = settings?.app_name || "RivalScope";
+  useDocumentTitle("Sign In");
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
