@@ -1,15 +1,27 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Play,
   FileText,
   Shield,
   Archive,
   ArchiveRestore,
+  Loader2,
+  Brain,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import type { Competitor } from "@/hooks/useCompetitors";
 import { useUpdateCompetitorStatus } from "@/hooks/useCompetitors";
+
+type ScanPhase = "idle" | "scanning" | "analyzing";
 
 const statusStyles: Record<string, string> = {
   active: "bg-primary/10 text-primary",
@@ -23,28 +35,48 @@ const reviewSourceLabels: Record<string, string> = {
   trustpilot: "Trustpilot",
 };
 
+const scrapeOptions = [
+  { label: "Full Site Scan", value: "full_site" },
+  { label: "Landing Page Only", value: "landing_page" },
+  { label: "Blog & Content", value: "blog" },
+  { label: "Pricing Pages", value: "pricing" },
+];
+
 interface CompetitorCardProps {
   competitor: Competitor;
   lastAnalyzed?: string;
+  scanPhase?: ScanPhase;
+  onScan?: (jobType: string) => void;
 }
 
-export function CompetitorCard({ competitor, lastAnalyzed }: CompetitorCardProps) {
+export function CompetitorCard({ competitor, lastAnalyzed, scanPhase = "idle", onScan }: CompetitorCardProps) {
   const updateStatus = useUpdateCompetitorStatus();
+  const navigate = useNavigate();
 
   const badgeClass = statusStyles[competitor.status] || statusStyles.active;
   const reviewSources = competitor.review_sources
     ? Object.keys(competitor.review_sources)
     : [];
 
-  const handleArchiveToggle = () => {
+  const handleArchiveToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
     updateStatus.mutate({
       id: competitor.id,
       status: competitor.status === "archived" ? "active" : "archived",
     });
   };
 
+  const handleCardClick = () => {
+    navigate(`/competitors/${competitor.id}`);
+  };
+
+  const isWorking = scanPhase !== "idle";
+
   return (
-    <div className="bg-card border border-border rounded-2xl p-6 transition-all duration-150 hover:border-border-active hover:shadow-card-hover flex flex-col">
+    <div
+      onClick={handleCardClick}
+      className="bg-card border border-border rounded-2xl p-6 transition-all duration-150 hover:border-border-active hover:shadow-card-hover flex flex-col cursor-pointer"
+    >
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="min-w-0 flex-1">
@@ -68,6 +100,20 @@ export function CompetitorCard({ competitor, lastAnalyzed }: CompetitorCardProps
         <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{competitor.description}</p>
       )}
 
+      {/* Scanning indicator */}
+      {isWorking && (
+        <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-lg bg-primary/[0.06] animate-pulse">
+          {scanPhase === "scanning" ? (
+            <Loader2 className="h-3.5 w-3.5 text-primary animate-spin" />
+          ) : (
+            <Brain className="h-3.5 w-3.5 text-accent animate-pulse" />
+          )}
+          <span className="text-xs font-medium text-foreground">
+            {scanPhase === "scanning" ? "Scanning..." : "Analyzing..."}
+          </span>
+        </div>
+      )}
+
       {/* Meta */}
       <div className="flex items-center gap-3 mt-auto pt-3 border-t border-border">
         <span className="text-xs text-muted-foreground">
@@ -75,8 +121,6 @@ export function CompetitorCard({ competitor, lastAnalyzed }: CompetitorCardProps
             ? `Analyzed ${formatDistanceToNow(new Date(lastAnalyzed), { addSuffix: true })}`
             : "Never analyzed"}
         </span>
-
-        {/* Review source badges */}
         {reviewSources.length > 0 && (
           <div className="flex gap-1 ml-auto">
             {reviewSources.map((src) => (
@@ -92,31 +136,67 @@ export function CompetitorCard({ competitor, lastAnalyzed }: CompetitorCardProps
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-1 mt-3 pt-3 border-t border-border">
+      <div className="flex items-center gap-1 mt-3 pt-3 border-t border-border" onClick={(e) => e.stopPropagation()}>
+        <DropdownMenu>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <button
+                  disabled={isWorking}
+                  className="p-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/[0.06] transition-colors disabled:opacity-50"
+                >
+                  {isWorking ? (
+                    scanPhase === "scanning" ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                    ) : (
+                      <Brain className="h-4 w-4 text-accent animate-pulse" />
+                    )
+                  ) : (
+                    <Play className="h-4 w-4" />
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent>Scan competitor</TooltipContent>
+          </Tooltip>
+          <DropdownMenuContent align="start" className="w-48">
+            {scrapeOptions.map((opt) => (
+              <DropdownMenuItem key={opt.value} onSelect={() => onScan?.(opt.value)}>
+                {opt.label}
+              </DropdownMenuItem>
+            ))}
+            {reviewSources.length > 0 && (
+              <DropdownMenuItem onSelect={() => onScan?.("reviews")}>
+                Reviews
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <Tooltip>
           <TooltipTrigger asChild>
-            <button className="p-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/[0.06] transition-colors">
-              <Play className="h-4 w-4" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent>Scan competitor</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            <button
+              onClick={() => navigate(`/competitors/${competitor.id}`)}
+              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
               <FileText className="h-4 w-4" />
             </button>
           </TooltipTrigger>
           <TooltipContent>View report</TooltipContent>
         </Tooltip>
+
         <Tooltip>
           <TooltipTrigger asChild>
-            <button className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            <button
+              onClick={() => navigate(`/competitors/${competitor.id}?tab=overview`)}
+              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
               <Shield className="h-4 w-4" />
             </button>
           </TooltipTrigger>
           <TooltipContent>Battlecard</TooltipContent>
         </Tooltip>
+
         <div className="ml-auto">
           <Tooltip>
             <TooltipTrigger asChild>
