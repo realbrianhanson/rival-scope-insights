@@ -36,6 +36,7 @@ serve(async (req) => {
     const reports = reportsRes.data || [];
     const gaps = gapsRes.data || [];
     const alerts = alertsRes.data || [];
+    const appName = settingsRes.data?.app_name || "RivalScope";
 
     // Check if message mentions a specific competitor
     let specificCompetitorReport = "";
