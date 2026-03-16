@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { Target, List, LayoutGrid, ChevronDown } from "lucide-react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 // --- types ---
 type Gap = any;
