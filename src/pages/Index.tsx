@@ -10,6 +10,7 @@ import { RecentReports } from "@/components/dashboard/RecentReports";
 import { TopOpportunities } from "@/components/dashboard/TopOpportunities";
 import { AlertFeed } from "@/components/dashboard/AlertFeed";
 import { ThreatRadar } from "@/components/dashboard/ThreatRadar";
+import { SuggestedCompetitors } from "@/components/dashboard/SuggestedCompetitors";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -178,7 +179,14 @@ export default function Index() {
 
         {/* Bottom row */}
         <AnimatedItem>
-          <AlertFeed alerts={dashboard.recentAlerts} loading={dashboard.isLoading} />
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
+            <div className="lg:col-span-3">
+              <AlertFeed alerts={dashboard.recentAlerts} loading={dashboard.isLoading} />
+            </div>
+            <div className="lg:col-span-2">
+              <SuggestedCompetitors loading={dashboard.isLoading} />
+            </div>
+          </div>
         </AnimatedItem>
       </AnimatedPage>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { AppLayout } from "@/components/AppLayout";
 import { AnimatedPage, AnimatedItem } from "@/components/AnimatedPage";
 import { useCompetitorDetail } from "@/hooks/useCompetitorDetail";
@@ -37,8 +37,13 @@ import {
   Code,
   Clock,
   Database,
+  Compass,
+  Plus,
+  X,
 } from "lucide-react";
 import { ThreatScoreBadge, ThreatTrendIcon } from "@/components/dashboard/ThreatRadar";
+import { useCompetitorSuggestionsByCompetitor, useDismissSuggestion, useAcceptSuggestion } from "@/hooks/useCompetitorSuggestions";
+import { AddCompetitorModal } from "@/components/competitors/AddCompetitorModal";
 
 // --- Skeleton ---
 function TabSkeleton() {
@@ -107,6 +112,8 @@ export default function CompetitorDetail() {
   const [generatingBattlecard, setGeneratingBattlecard] = useState(false);
   const [generatingReport, setGeneratingReport] = useState(false);
   const [gapFilter, setGapFilter] = useState<string>("all");
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [prefill, setPrefill] = useState<{ name: string; url: string } | null>(null);
 
   const {
     competitor,
@@ -118,6 +125,16 @@ export default function CompetitorDetail() {
     scrapeResults,
     latestSnapshot,
   } = useCompetitorDetail(id);
+
+  const { data: relatedSuggestions } = useCompetitorSuggestionsByCompetitor(id);
+  const dismissSuggestion = useDismissSuggestion();
+  const acceptSuggestion = useAcceptSuggestion();
+
+  const handleTrackSuggestion = (s: any) => {
+    setPrefill({ name: s.suggested_name, url: s.suggested_url });
+    acceptSuggestion.mutate(s.id);
+    setAddModalOpen(true);
+  };
 
   const comp = competitor.data;
   useDocumentTitle(comp?.name ? `${comp.name}` : "Competitor");
@@ -316,6 +333,48 @@ export default function CompetitorDetail() {
                         {techStack.map((t: string, i: number) => (
                           <span key={i} className="text-xs font-mono px-2.5 py-1 rounded-lg bg-muted text-muted-foreground">{t}</span>
                         ))}
+                      </div>
+                    </div>
+                  )}
+                  {/* Related Competitors */}
+                  {relatedSuggestions && relatedSuggestions.length > 0 && (
+                    <div className="bg-card border border-border rounded-xl p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Compass className="h-4 w-4 text-primary" />
+                        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Related Competitors</h3>
+                      </div>
+                      <div className="space-y-3">
+                        {relatedSuggestions.map((s: any) => {
+                          const relevanceColors: Record<string, string> = {
+                            direct_competitor: "bg-destructive/10 text-destructive",
+                            indirect_competitor: "bg-warning/10 text-warning",
+                            emerging_threat: "bg-[hsl(22,100%,60%)]/10 text-[hsl(22,100%,60%)]",
+                            adjacent_market: "bg-accent/10 text-accent",
+                          };
+                          return (
+                            <div key={s.id} className="flex items-start justify-between gap-2">
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="text-sm font-semibold text-foreground">{s.suggested_name}</span>
+                                  <span className={cn(
+                                    "text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full",
+                                    relevanceColors[s.relevance] || "bg-muted text-muted-foreground"
+                                  )}>{s.relevance?.replace(/_/g, " ")}</span>
+                                </div>
+                                <p className="text-xs font-mono text-muted-foreground mt-0.5">{s.suggested_url}</p>
+                                <p className="text-xs text-muted-foreground mt-1">{s.reason}</p>
+                              </div>
+                              <div className="flex gap-1.5 flex-shrink-0">
+                                <Button size="sm" className="h-7 text-xs px-2.5" onClick={() => handleTrackSuggestion(s)}>
+                                  <Plus className="h-3 w-3 mr-1" />Track
+                                </Button>
+                                <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => dismissSuggestion.mutate(s.id)}>
+                                  <X className="h-3.5 w-3.5" />
+                                </Button>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -572,6 +631,16 @@ export default function CompetitorDetail() {
           </Tabs>
         </AnimatedItem>
       </AnimatedPage>
+
+      <AddCompetitorModal
+        open={addModalOpen}
+        onOpenChange={(open) => {
+          setAddModalOpen(open);
+          if (!open) setPrefill(null);
+        }}
+        defaultName={prefill?.name}
+        defaultUrl={prefill?.url}
+      />
     </AppLayout>
   );
 }

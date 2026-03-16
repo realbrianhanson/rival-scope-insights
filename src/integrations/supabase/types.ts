@@ -334,6 +334,67 @@ export type Database = {
           },
         ]
       }
+      competitor_suggestions: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string
+          relevance: string
+          source_competitor_id: string
+          source_report_id: string
+          status: string
+          suggested_name: string
+          suggested_url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reason: string
+          relevance?: string
+          source_competitor_id: string
+          source_report_id: string
+          status?: string
+          suggested_name: string
+          suggested_url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string
+          relevance?: string
+          source_competitor_id?: string
+          source_report_id?: string
+          status?: string
+          suggested_name?: string
+          suggested_url?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "competitor_suggestions_source_competitor_id_fkey"
+            columns: ["source_competitor_id"]
+            isOneToOne: false
+            referencedRelation: "competitors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "competitor_suggestions_source_report_id_fkey"
+            columns: ["source_report_id"]
+            isOneToOne: false
+            referencedRelation: "analysis_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "competitor_suggestions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       competitors: {
         Row: {
           created_at: string

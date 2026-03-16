@@ -270,12 +270,71 @@ Return ONLY valid JSON: { "threat_score": integer 1-100, "threat_level": string 
     }
     await supabase.from("competitors").update(competitorUpdate).eq("id", competitor_id);
 
+    // STEP 5 — Competitor Discovery Suggestions (full_intel only)
+    let suggestionsCount = 0;
+    if (analysis_type === "full_intel" && reportId) {
+      try {
+        const discoveryPrompt = `Based on this competitive analysis of ${competitor.name} in the ${industry} industry, suggest 3-5 other companies that ${companyName} should also be monitoring. These should be companies that:
+- Compete in the same space or adjacent markets
+- Are mentioned in or linked from the competitor's website
+- Target a similar audience
+- Could become future competitive threats
+
+Return ONLY valid JSON: { "suggested_competitors": [{ "name": string, "website_url": string (best guess, use standard domain patterns), "reason": string (one sentence explaining why they should be tracked), "relevance": string one of "direct_competitor"/"indirect_competitor"/"emerging_threat"/"adjacent_market" }] }`;
+
+        const discoveryResult = await callAI(LOVABLE_API_KEY, "google/gemini-3-flash-preview", discoveryPrompt, JSON.stringify(parsed));
+        
+        if (discoveryResult.parsed?.suggested_competitors?.length > 0) {
+          // Store in full_report
+          await supabase.from("analysis_reports").update({
+            full_report: { ...parsed, suggested_competitors: discoveryResult.parsed.suggested_competitors },
+          }).eq("id", reportId);
+
+          // Get existing competitors and suggestions to avoid duplicates
+          const [existingComps, existingSuggestions] = await Promise.all([
+            supabase.from("competitors").select("website_url").eq("user_id", user_id),
+            supabase.from("competitor_suggestions").select("suggested_url").eq("user_id", user_id).in("status", ["pending", "added"]),
+          ]);
+
+          const existingUrls = new Set([
+            ...(existingComps.data || []).map((c: any) => c.website_url?.toLowerCase().replace(/\/$/, "")),
+            ...(existingSuggestions.data || []).map((s: any) => s.suggested_url?.toLowerCase().replace(/\/$/, "")),
+          ]);
+
+          const newSuggestions = discoveryResult.parsed.suggested_competitors
+            .filter((s: any) => {
+              const normalizedUrl = s.website_url?.toLowerCase().replace(/\/$/, "");
+              return normalizedUrl && !existingUrls.has(normalizedUrl);
+            })
+            .map((s: any) => ({
+              user_id,
+              suggested_name: s.name,
+              suggested_url: s.website_url,
+              reason: s.reason,
+              relevance: s.relevance || "direct_competitor",
+              source_competitor_id: competitor_id,
+              source_report_id: reportId,
+              status: "pending",
+            }));
+
+          if (newSuggestions.length > 0) {
+            const { error: sugError } = await supabase.from("competitor_suggestions").insert(newSuggestions);
+            if (sugError) console.error("Failed to insert suggestions:", sugError);
+            else suggestionsCount = newSuggestions.length;
+          }
+        }
+      } catch (e) {
+        console.error("Competitor discovery failed (non-fatal):", e);
+      }
+    }
+
     return new Response(JSON.stringify({
       success: true,
       report_id: reportId,
       analysis_type,
       gaps_found: gaps.length,
       threat_score: threatData?.threat_score ?? null,
+      suggestions_found: suggestionsCount,
     }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
   } catch (error) {
