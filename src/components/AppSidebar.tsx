@@ -57,12 +57,22 @@ export function AppSidebar({ onOpenPalette }: { onOpenPalette?: () => void }) {
             {appName}
           </span>
         )}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="p-1.5 rounded-md hover:bg-muted text-muted-foreground transition-colors"
-        >
-          <ChevronLeft className={cn("h-4 w-4 transition-transform duration-200", collapsed && "rotate-180")} />
-        </button>
+        <div className="flex items-center gap-1.5">
+          {!collapsed && (
+            <button
+              onClick={onOpenPalette}
+              className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground text-[10px] font-mono leading-none hover:bg-muted/80 transition-colors"
+            >
+              ⌘K
+            </button>
+          )}
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="p-1.5 rounded-md hover:bg-muted text-muted-foreground transition-colors"
+          >
+            <ChevronLeft className={cn("h-4 w-4 transition-transform duration-200", collapsed && "rotate-180")} />
+          </button>
+        </div>
       </div>
 
       {/* Nav */}
