@@ -174,6 +174,7 @@ export default function Reports() {
                 {analysisTypes.map((t) => (
                   <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
                 ))}
+                <SelectItem value="executive_briefing">Executive Briefing</SelectItem>
               </SelectContent>
             </Select>
 

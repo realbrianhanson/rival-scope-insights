@@ -10,6 +10,7 @@ const reportTypeBadgeColors: Record<string, string> = {
   comparison: "bg-warning-medium/10 text-warning-medium",
   battlecard: "bg-warning/10 text-warning",
   review_sentiment: "bg-destructive/10 text-destructive",
+  executive_briefing: "bg-[hsl(240,7%,95%)] text-[hsl(240,10%,4%)]",
 };
 
 interface RecentReportsProps {

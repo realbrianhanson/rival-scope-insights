@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.generate-pdf]
 verify_jwt = false
+
+[functions.generate-executive-briefing]
+verify_jwt = false
