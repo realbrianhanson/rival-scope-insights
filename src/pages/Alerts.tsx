@@ -56,6 +56,9 @@ const typeConfig: Record<string, { icon: typeof Bell; color: string }> = {
 };
 
 export default function AlertsPage() {
+  useDocumentTitle("Alerts");
+  const { data: appSettings } = useAppSettings();
+  const appName = appSettings?.app_name || "RivalScope";
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
