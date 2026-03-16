@@ -29,13 +29,9 @@ import { formatDistanceToNow } from "date-fns";
 import {
   Plus,
   FileText,
-  Loader2,
-  CheckCircle2,
-  Circle,
   Search,
-  Brain,
-  Database,
 } from "lucide-react";
+import { AnalysisProgress, STEP_CONFIGS } from "@/components/AnalysisProgress";
 
 const reportTypeColors: Record<string, string> = {
   full_intel: "bg-[hsl(164,100%,42%)]/10 text-[hsl(164,100%,42%)]",
@@ -64,11 +60,6 @@ const analysisTypes = [
   { value: "review_sentiment", label: "Review Sentiment Analysis" },
 ];
 
-const progressSteps = [
-  { label: "Gathering data", icon: Database },
-  { label: "Analyzing content", icon: Brain },
-  { label: "Building report", icon: FileText },
-];
 
 export default function Reports() {
   useDocumentTitle("Reports");
@@ -262,38 +253,13 @@ export default function Reports() {
           </DialogHeader>
 
           {generating ? (
-            <div className="py-8 space-y-6">
-              {progressSteps.map((step, i) => {
-                const StepIcon = step.icon;
-                const status = i < genStep ? "done" : i === genStep ? "active" : "pending";
-                return (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className={cn(
-                      "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all",
-                      status === "done" ? "bg-primary/10" :
-                      status === "active" ? "bg-primary/10 animate-pulse" :
-                      "bg-muted"
-                    )}>
-                      {status === "done" ? (
-                        <CheckCircle2 className="h-4 w-4 text-primary" />
-                      ) : status === "active" ? (
-                        <Loader2 className="h-4 w-4 text-primary animate-spin" />
-                      ) : (
-                        <Circle className="h-4 w-4 text-muted-foreground" />
-                      )}
-                    </div>
-                    <span className={cn(
-                      "text-sm font-medium transition-colors",
-                      status === "done" ? "text-primary" :
-                      status === "active" ? "text-foreground" :
-                      "text-muted-foreground"
-                    )}>
-                      {step.label}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
+            <AnalysisProgress
+              steps={STEP_CONFIGS.full_analysis}
+              active={generating}
+              currentStep={genStep}
+              title="Generating Report"
+              estimatedDuration={25000}
+            />
           ) : (
             <div className="space-y-4 pt-2">
               <div>

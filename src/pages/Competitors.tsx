@@ -137,16 +137,29 @@ export default function Competitors() {
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-card border border-border rounded-2xl p-6 space-y-3">
-                  <div className="flex justify-between">
-                    <div className="space-y-2 flex-1">
-                      <div className="h-4 w-3/4 skeleton-shimmer rounded" />
-                      <div className="h-3 w-1/2 skeleton-shimmer rounded" />
+                <div key={i} className="bg-card border border-border rounded-2xl p-6 flex flex-col">
+                  {/* Threat badge placeholder top-right */}
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="flex-1 space-y-2">
+                      <div className="h-[18px] w-3/5 skeleton-shimmer rounded" />
+                      <div className="h-3 w-2/5 skeleton-shimmer rounded" />
                     </div>
-                    <div className="h-5 w-14 skeleton-shimmer rounded-full" />
+                    <div className="h-6 w-10 skeleton-shimmer rounded-full" />
                   </div>
-                  <div className="h-3 w-full skeleton-shimmer rounded" />
-                  <div className="h-8 w-full skeleton-shimmer rounded mt-4" />
+                  {/* Description */}
+                  <div className="h-3 w-full skeleton-shimmer rounded mb-1" />
+                  <div className="h-3 w-4/5 skeleton-shimmer rounded mb-3" />
+                  {/* Meta row */}
+                  <div className="flex items-center gap-3 pt-3 mt-auto border-t border-border">
+                    <div className="h-3 w-28 skeleton-shimmer rounded" />
+                  </div>
+                  {/* Actions row */}
+                  <div className="flex items-center gap-2 pt-3 mt-3 border-t border-border">
+                    <div className="h-8 w-8 skeleton-shimmer rounded-lg" />
+                    <div className="h-8 w-8 skeleton-shimmer rounded-lg" />
+                    <div className="h-8 w-8 skeleton-shimmer rounded-lg" />
+                    <div className="h-8 w-8 skeleton-shimmer rounded-lg ml-auto" />
+                  </div>
                 </div>
               ))}
             </div>

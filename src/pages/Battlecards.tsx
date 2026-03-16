@@ -87,13 +87,17 @@ export default function Battlecards() {
           {isLoading ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-card border border-border rounded-xl p-6 space-y-3">
-                  <div className="h-5 w-1/2 skeleton-shimmer rounded" />
+                <div key={i} className="bg-card border border-border rounded-xl p-5 space-y-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="h-[18px] w-2/5 skeleton-shimmer rounded" />
+                    <div className="h-3 w-16 skeleton-shimmer rounded" />
+                  </div>
+                  <div className="h-3 w-full skeleton-shimmer rounded" />
                   <div className="h-3 w-3/4 skeleton-shimmer rounded" />
-                  <div className="flex gap-2">
-                    <div className="h-5 w-20 skeleton-shimmer rounded-full" />
-                    <div className="h-5 w-20 skeleton-shimmer rounded-full" />
-                    <div className="h-5 w-20 skeleton-shimmer rounded-full" />
+                  <div className="flex gap-2 pt-1">
+                    <div className="h-[22px] w-20 skeleton-shimmer rounded-full" />
+                    <div className="h-[22px] w-24 skeleton-shimmer rounded-full" />
+                    <div className="h-[22px] w-20 skeleton-shimmer rounded-full" />
                   </div>
                 </div>
               ))}

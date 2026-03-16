@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Play,
@@ -107,17 +106,21 @@ export function CompetitorCard({ competitor, lastAnalyzed, scanPhase = "idle", o
         <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{competitor.description}</p>
       )}
 
-      {/* Scanning indicator */}
+      {/* Scanning indicator — upgraded */}
       {isWorking && (
-        <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-lg bg-primary/[0.06] animate-pulse">
-          {scanPhase === "scanning" ? (
-            <Loader2 className="h-3.5 w-3.5 text-primary animate-spin" />
-          ) : (
-            <Brain className="h-3.5 w-3.5 text-accent animate-pulse" />
-          )}
-          <span className="text-xs font-medium text-foreground">
-            {scanPhase === "scanning" ? "Scanning..." : "Analyzing..."}
-          </span>
+        <div className="flex items-center gap-3 mb-3 px-3 py-2.5 rounded-lg bg-primary/[0.04] border border-primary/10">
+          <div className="relative w-4 h-4 flex-shrink-0">
+            <div className="w-2 h-2 rounded-full bg-primary absolute top-1 left-1" />
+            <svg className="absolute inset-0 w-4 h-4 animate-spin" style={{ animationDuration: "1.5s" }} viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="7" fill="none" stroke="hsl(var(--primary))" strokeWidth="1.5" strokeDasharray="12 32" strokeLinecap="round" />
+            </svg>
+          </div>
+          <div className="min-w-0">
+            <span className="text-xs font-medium text-foreground block">
+              {scanPhase === "scanning" ? "Scanning pages..." : "Running AI analysis..."}
+            </span>
+            <span className="text-[10px] text-muted-foreground">This may take a moment</span>
+          </div>
         </div>
       )}
 

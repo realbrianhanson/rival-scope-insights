@@ -117,11 +117,34 @@
   background: linear-gradient(
     90deg,
     hsl(var(--card)) 0%,
-    hsl(var(--surface-raised)) 50%,
+    hsl(var(--surface-raised)) 40%,
+    hsl(164 100% 42% / 0.03) 50%,
+    hsl(var(--surface-raised)) 60%,
     hsl(var(--card)) 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ===================== */
+/* Splash loader bar     */
+/* ===================== */
+@keyframes splash-bar {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+
+.splash-loader-bar {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(164 100% 42% / 0.6) 30%,
+    hsl(164 100% 42%) 50%,
+    hsl(164 100% 42% / 0.6) 70%,
+    transparent 100%
+  );
+  animation: splash-bar 1.5s ease-in-out infinite;
 }
 
 /* ===================== */

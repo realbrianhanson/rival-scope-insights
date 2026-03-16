@@ -18,7 +18,8 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
-import { Plus, GitCompareArrows, Loader2 } from "lucide-react";
+import { Plus, GitCompareArrows } from "lucide-react";
+import { AnalysisProgress, STEP_CONFIGS } from "@/components/AnalysisProgress";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
 import { ComparisonBarsIllustration } from "@/components/empty-states/ComparisonBarsIllustration";
@@ -144,13 +145,12 @@ export default function Comparisons() {
           </DialogHeader>
 
           {generating ? (
-            <div className="py-10 text-center space-y-4">
-              <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
-              <p className="text-sm font-medium text-foreground">
-                Analyzing {selectedIds.length} competitors...
-              </p>
-              <p className="text-xs text-muted-foreground">This may take a moment.</p>
-            </div>
+            <AnalysisProgress
+              steps={STEP_CONFIGS.comparison}
+              active={generating}
+              title={`Analyzing ${selectedIds.length} competitors`}
+              estimatedDuration={20000}
+            />
           ) : (
             <div className="space-y-4 pt-2">
               <div>
