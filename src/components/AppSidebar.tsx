@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useUnreadAlertCount } from "@/hooks/useAlerts";
 
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
