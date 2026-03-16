@@ -519,8 +519,7 @@ export default function SharedView() {
         } else {
           setInvalid(true);
         }
-      } catch (e) {
-        console.error("Shared view error:", e);
+      } catch {
         setInvalid(true);
       }
       setLoading(false);
