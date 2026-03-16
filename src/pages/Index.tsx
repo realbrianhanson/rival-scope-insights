@@ -10,6 +10,7 @@ import { RecentReports } from "@/components/dashboard/RecentReports";
 import { TopOpportunities } from "@/components/dashboard/TopOpportunities";
 import { AlertFeed } from "@/components/dashboard/AlertFeed";
 import { ThreatRadar } from "@/components/dashboard/ThreatRadar";
+import { SuggestedCompetitors } from "@/components/dashboard/SuggestedCompetitors";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
