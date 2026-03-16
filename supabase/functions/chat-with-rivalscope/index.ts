@@ -63,7 +63,7 @@ serve(async (req) => {
     const gapsList = gaps.map((g: any) => `- ${g.gap_title} (score: ${g.opportunity_score}/10, category: ${g.gap_category}): ${g.gap_description}`).join("\n") || "None";
     const alertsList = alerts.map((a: any) => `- [${a.alert_type}] ${a.title}: ${a.description}`).join("\n") || "None";
 
-    const systemPrompt = `You are RivalScope AI, a competitive intelligence assistant. You have access to the user's competitive intelligence data. The user's company is "${profile?.company_name || "Unknown"}" in the "${profile?.industry || "Unknown"}" industry.
+    const systemPrompt = `You are ${appName} AI, a competitive intelligence assistant. You have access to the user's competitive intelligence data. The user's company is "${profile?.company_name || "Unknown"}" in the "${profile?.industry || "Unknown"}" industry.
 
 Here is their current competitive intelligence data:
 

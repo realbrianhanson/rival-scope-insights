@@ -178,7 +178,7 @@ export default function AlertsPage() {
               ))}
             </div>
           ) : alerts.length === 0 ? (
-            <EmptyState />
+            <EmptyState appName={appName} />
           ) : (
             <div className="space-y-3">
               {alerts.map((alert) => {
