@@ -11,7 +11,10 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
-import { Shield, Search, Loader2, Zap } from "lucide-react";
+import { Search, Loader2, Zap } from "lucide-react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
+import { ShieldAssembleIllustration } from "@/components/empty-states/ShieldAssembleIllustration";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export default function Battlecards() {
