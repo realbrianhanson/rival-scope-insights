@@ -86,8 +86,6 @@ export default function Index() {
           <AlertFeed alerts={dashboard.recentAlerts} loading={dashboard.isLoading} />
         </AnimatedItem>
       </AnimatedPage>
-
-      <DashboardFAB />
     </AppLayout>
   );
 }
