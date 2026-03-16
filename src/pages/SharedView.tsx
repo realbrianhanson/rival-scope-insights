@@ -454,14 +454,15 @@ export default function SharedView() {
 
     const load = async () => {
       try {
-        // Look up share link
-        const { data: link, error: linkError } = await supabase
+        // Look up share link using raw fetch to bypass type issues
+        const { data: linkRaw, error: linkError } = await supabase
           .from("shared_links" as any)
           .select("*")
           .eq("share_token", token)
           .eq("is_active", true)
           .maybeSingle();
 
+        const link = linkRaw as any;
         if (linkError || !link) { setInvalid(true); setLoading(false); return; }
 
         // Check expiration
@@ -472,12 +473,21 @@ export default function SharedView() {
         // Increment view count
         await supabase
           .from("shared_links" as any)
-          .update({ view_count: (link.view_count || 0) + 1 })
+          .update({ view_count: (link.view_count || 0) + 1 } as any)
           .eq("id", link.id);
 
         // Fetch content based on type
-        const ct = link.content_type;
+        const ct = link.content_type as string;
         setContentType(ct);
+
+        const fetchSettings = async (userId: string) => {
+          const { data: settings } = await supabase
+            .from("app_settings")
+            .select("app_name")
+            .eq("user_id", userId)
+            .maybeSingle();
+          if (settings?.app_name) setAppName(settings.app_name);
+        };
 
         if (ct === "report") {
           const { data } = await supabase
@@ -487,14 +497,7 @@ export default function SharedView() {
             .single();
           if (!data) { setInvalid(true); setLoading(false); return; }
           setContent(data);
-
-          // Get app name
-          const { data: settings } = await supabase
-            .from("app_settings")
-            .select("app_name")
-            .eq("user_id", link.user_id)
-            .maybeSingle();
-          if (settings?.app_name) setAppName(settings.app_name);
+          await fetchSettings(link.user_id);
         } else if (ct === "battlecard") {
           const { data } = await supabase
             .from("battlecards")
@@ -503,13 +506,7 @@ export default function SharedView() {
             .single();
           if (!data) { setInvalid(true); setLoading(false); return; }
           setContent(data);
-
-          const { data: settings } = await supabase
-            .from("app_settings")
-            .select("app_name")
-            .eq("user_id", link.user_id)
-            .maybeSingle();
-          if (settings?.app_name) setAppName(settings.app_name);
+          await fetchSettings(link.user_id);
         } else if (ct === "comparison") {
           const { data } = await supabase
             .from("comparison_matrices")
@@ -518,13 +515,7 @@ export default function SharedView() {
             .single();
           if (!data) { setInvalid(true); setLoading(false); return; }
           setContent(data);
-
-          const { data: settings } = await supabase
-            .from("app_settings")
-            .select("app_name")
-            .eq("user_id", link.user_id)
-            .maybeSingle();
-          if (settings?.app_name) setAppName(settings.app_name);
+          await fetchSettings(link.user_id);
         } else {
           setInvalid(true);
         }
