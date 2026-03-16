@@ -24,6 +24,7 @@ import ComparisonsPage from "./pages/Comparisons";
 import ComparisonDetail from "./pages/ComparisonDetail";
 import AlertsPage from "./pages/Alerts";
 import SettingsPage from "./pages/Settings";
+import SharedView from "./pages/SharedView";
 import OnboardingWizard from "./components/OnboardingWizard";
 import { Settings } from "lucide-react";
 
