@@ -62,6 +62,8 @@ export function CommandPalette({
   const { theme, toggleTheme } = useTheme();
   const { data: competitors } = useCompetitors();
   const { data: reports } = useReports();
+  const { data: appSettings } = useAppSettings();
+  const appName = appSettings?.app_name || "RivalScope";
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
