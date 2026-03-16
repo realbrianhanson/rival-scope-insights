@@ -38,6 +38,7 @@ export function AppSidebar() {
   const { theme, toggleTheme } = useTheme();
   const { signOut } = useAuth();
   const { data: settings } = useAppSettings();
+  const { data: unreadCount } = useUnreadAlertCount();
   const [collapsed, setCollapsed] = useState(false);
 
   const appName = settings?.app_name || "RivalScope";
