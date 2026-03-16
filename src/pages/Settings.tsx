@@ -59,12 +59,14 @@ export default function SettingsPage() {
             <TabsList className="bg-muted/50 border border-border">
               <TabsTrigger value="profile" className="gap-1.5"><User className="h-3.5 w-3.5" />Profile</TabsTrigger>
               <TabsTrigger value="appearance" className="gap-1.5"><Palette className="h-3.5 w-3.5" />Appearance</TabsTrigger>
+              <TabsTrigger value="shared" className="gap-1.5"><Link2 className="h-3.5 w-3.5" />Shared Links</TabsTrigger>
               <TabsTrigger value="notifications" className="gap-1.5"><Bell className="h-3.5 w-3.5" />Notifications</TabsTrigger>
               <TabsTrigger value="usage" className="gap-1.5"><BarChart3 className="h-3.5 w-3.5" />Usage</TabsTrigger>
             </TabsList>
 
             <TabsContent value="profile"><ProfileTab /></TabsContent>
             <TabsContent value="appearance"><AppearanceTab /></TabsContent>
+            <TabsContent value="shared"><SharedLinksTab /></TabsContent>
             <TabsContent value="notifications"><NotificationsTab /></TabsContent>
             <TabsContent value="usage"><UsageTab /></TabsContent>
           </Tabs>
