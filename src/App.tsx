@@ -14,6 +14,7 @@ import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import StubPage from "./pages/StubPage";
 import Competitors from "./pages/Competitors";
+import CompetitorDetail from "./pages/CompetitorDetail";
 
 const queryClient = new QueryClient();
 
