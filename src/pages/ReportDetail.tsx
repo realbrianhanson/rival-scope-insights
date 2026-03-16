@@ -214,6 +214,7 @@ export default function ReportDetail() {
           {report.report_type === "executive_briefing" && fullReport && <ExecutiveBriefingSection report={fullReport} />}
         </AnimatedItem>
       </AnimatedPage>
+      <ShareLinkModal open={shareOpen} onOpenChange={setShareOpen} contentType="report" contentId={report.id} />
     </AppLayout>
   );
 }

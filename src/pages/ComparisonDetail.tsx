@@ -284,6 +284,7 @@ export default function ComparisonDetail() {
           </AnimatedItem>
         )}
       </AnimatedPage>
+      <ShareLinkModal open={shareOpen} onOpenChange={setShareOpen} contentType="comparison" contentId={matrix.id} />
     </AppLayout>
   );
 }

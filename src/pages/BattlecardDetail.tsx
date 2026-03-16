@@ -271,6 +271,7 @@ export default function BattlecardDetail() {
           </div>
         </AnimatedItem>
       </AnimatedPage>
+      <ShareLinkModal open={shareOpen} onOpenChange={setShareOpen} contentType="battlecard" contentId={bc.id} />
     </AppLayout>
   );
 }
