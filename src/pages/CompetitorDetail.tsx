@@ -112,6 +112,8 @@ export default function CompetitorDetail() {
   const [generatingBattlecard, setGeneratingBattlecard] = useState(false);
   const [generatingReport, setGeneratingReport] = useState(false);
   const [gapFilter, setGapFilter] = useState<string>("all");
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [prefill, setPrefill] = useState<{ name: string; url: string } | null>(null);
 
   const {
     competitor,
