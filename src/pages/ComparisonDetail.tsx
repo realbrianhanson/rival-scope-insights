@@ -57,6 +57,7 @@ export default function ComparisonDetail() {
   const { user } = useAuth();
   const { data: matrix, isLoading, refetch } = useComparisonDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   useDocumentTitle(matrix?.title || "Comparison");
 
   const handleRegenerate = async () => {
