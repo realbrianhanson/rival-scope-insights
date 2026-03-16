@@ -2,6 +2,7 @@ import { AppLayout } from "@/components/AppLayout";
 import { AnimatedPage, AnimatedItem } from "@/components/AnimatedPage";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useAuth } from "@/hooks/useAuth";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { RecentReports } from "@/components/dashboard/RecentReports";
