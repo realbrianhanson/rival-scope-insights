@@ -44,6 +44,8 @@ export default function Competitors() {
     };
   }, [competitors]);
 
+  const [sortByThreat, setSortByThreat] = useState(false);
+
   const filtered = useMemo(() => {
     if (!competitors) return [];
     let list = competitors;
@@ -56,8 +58,11 @@ export default function Competitors() {
           c.website_url.toLowerCase().includes(q)
       );
     }
+    if (sortByThreat) {
+      list = [...list].sort((a, b) => ((b as any).threat_score ?? -1) - ((a as any).threat_score ?? -1));
+    }
     return list;
-  }, [competitors, activeTab, search]);
+  }, [competitors, activeTab, search, sortByThreat]);
 
   return (
     <AppLayout>
