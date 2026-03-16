@@ -22,8 +22,10 @@ import {
   Loader2,
   ExternalLink,
   Download,
+  Share2,
 } from "lucide-react";
 import { useExportPdf } from "@/hooks/useExportPdf";
+import { ShareLinkModal } from "@/components/ShareLinkModal";
 
 const reportTypeColors: Record<string, string> = {
   full_intel: "bg-[hsl(164,100%,42%)]/10 text-[hsl(164,100%,42%)]",
