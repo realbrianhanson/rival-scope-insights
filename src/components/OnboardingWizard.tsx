@@ -96,7 +96,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
         body: { competitor_id: createdCompetitorId, user_id: user.id, job_type: "full_site" },
       });
       supabase.functions.invoke("analyze-competitor", {
-        body: { competitor_id: createdCompetitorId, user_id: user.id, report_type: "full_intel" },
+        body: { competitor_id: createdCompetitorId, user_id: user.id, analysis_type: "full_intel" },
       });
       toast.success("Scanning started! Your first report will be ready shortly.");
     } catch {
