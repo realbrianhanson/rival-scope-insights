@@ -36,6 +36,7 @@ const threatColor = (score: number) => {
   return "#00D4AA";
 };
 
+export default function Index() {
   const { data: settings } = useAppSettings();
   const { user } = useAuth();
   const dashboard = useDashboardData();
