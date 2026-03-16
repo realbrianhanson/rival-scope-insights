@@ -1,4 +1,5 @@
 import { TrendingUp } from "lucide-react";
+import { GapDonutChart } from "./GapDonutChart";
 
 const scoreColor = (score: number) => {
   if (score >= 9) return "#FF6B35";
@@ -24,9 +25,10 @@ interface TopOpportunitiesProps {
     competitors: { name: string } | null;
   }>;
   loading?: boolean;
+  gapDistribution?: Record<string, number>;
 }
 
-export function TopOpportunities({ opportunities, loading }: TopOpportunitiesProps) {
+export function TopOpportunities({ opportunities, loading, gapDistribution }: TopOpportunitiesProps) {
   if (loading) {
     return (
       <div className="bg-card border border-border rounded-2xl p-6 h-full">
@@ -90,6 +92,10 @@ export function TopOpportunities({ opportunities, loading }: TopOpportunitiesPro
             );
           })}
         </div>
+      )}
+
+      {gapDistribution && Object.keys(gapDistribution).length > 0 && (
+        <GapDonutChart distribution={gapDistribution} />
       )}
     </div>
   );

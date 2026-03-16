@@ -1,6 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 import { cn } from "@/lib/utils";
+import { Sparkline } from "./Sparkline";
 
 interface StatCardProps {
   title: string;
@@ -11,9 +12,23 @@ interface StatCardProps {
   loading?: boolean;
   color?: string;
   pulse?: boolean;
+  sparklineData?: Array<{ name: string; value: number }>;
+  sparklineColor?: string;
+  sparklineDelay?: number;
 }
 
-export function StatCard({ title, value, icon: Icon, decimals = 0, loading, color, pulse }: StatCardProps) {
+export function StatCard({
+  title,
+  value,
+  icon: Icon,
+  decimals = 0,
+  loading,
+  color,
+  pulse,
+  sparklineData,
+  sparklineColor,
+  sparklineDelay = 200,
+}: StatCardProps) {
   const displayValue = useCountUp(value, 600, decimals);
 
   if (loading) {
@@ -31,11 +46,11 @@ export function StatCard({ title, value, icon: Icon, decimals = 0, loading, colo
   return (
     <div
       className={cn(
-        "bg-card border border-border rounded-2xl p-6 transition-all duration-150 hover:border-border-active hover:shadow-card-hover",
+        "bg-card border border-border rounded-2xl p-6 transition-all duration-150 hover:border-border-active hover:shadow-card-hover relative overflow-hidden",
         pulse && "animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] border-primary/30"
       )}
     >
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 relative z-10">
         <span className="text-xs font-medium uppercase tracking-[0.05em] text-muted-foreground">
           {title}
         </span>
@@ -44,11 +59,14 @@ export function StatCard({ title, value, icon: Icon, decimals = 0, loading, colo
         </div>
       </div>
       <span
-        className="font-mono text-4xl font-bold leading-none"
+        className="font-mono text-4xl font-bold leading-none relative z-10"
         style={{ color: color || "hsl(var(--foreground))" }}
       >
         {displayValue}
       </span>
+      {sparklineData && sparklineColor && (
+        <Sparkline data={sparklineData} color={sparklineColor} animationDelay={sparklineDelay} />
+      )}
     </div>
   );
 }

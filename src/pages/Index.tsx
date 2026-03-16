@@ -5,12 +5,15 @@ import { useAppSettings } from "@/hooks/useAppSettings";
 import { useAuth } from "@/hooks/useAuth";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useDashboardData } from "@/hooks/useDashboardData";
+import { useDashboardChartData } from "@/hooks/useDashboardChartData";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { RecentReports } from "@/components/dashboard/RecentReports";
 import { TopOpportunities } from "@/components/dashboard/TopOpportunities";
 import { AlertFeed } from "@/components/dashboard/AlertFeed";
-import { ThreatRadar } from "@/components/dashboard/ThreatRadar";
+import { ThreatRadarChart } from "@/components/dashboard/ThreatRadarChart";
+import { ActivityTimeline } from "@/components/dashboard/ActivityTimeline";
 import { SuggestedCompetitors } from "@/components/dashboard/SuggestedCompetitors";
+import { Sparkline } from "@/components/dashboard/Sparkline";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -42,6 +45,7 @@ export default function Index() {
   const { data: settings } = useAppSettings();
   const { user } = useAuth();
   const dashboard = useDashboardData();
+  const chartData = useDashboardChartData();
   const appName = settings?.app_name || "RivalScope";
   useDocumentTitle("Dashboard");
   const navigate = useNavigate();
@@ -102,9 +106,9 @@ export default function Index() {
         {/* Stat cards */}
         <AnimatedItem>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {/* Threat Overview — replaces simple competitor count */}
-            <div className="bg-card border border-border rounded-2xl p-6 transition-all duration-150 hover:border-border-active hover:shadow-card-hover">
-              <div className="flex items-center justify-between mb-3">
+            {/* Threat Overview */}
+            <div className="bg-card border border-border rounded-2xl p-6 transition-all duration-150 hover:border-border-active hover:shadow-card-hover relative overflow-hidden">
+              <div className="flex items-center justify-between mb-3 relative z-10">
                 <span className="text-xs font-medium uppercase tracking-[0.05em] text-muted-foreground">
                   Threat Overview
                 </span>
@@ -115,7 +119,7 @@ export default function Index() {
               {dashboard.isLoading ? (
                 <div className="h-9 w-16 skeleton-shimmer rounded" />
               ) : dashboard.highestThreat ? (
-                <div>
+                <div className="relative z-10">
                   <span
                     className="font-mono text-4xl font-bold leading-none"
                     style={{ color: threatColor(dashboard.highestThreat.threat_score ?? 0) }}
@@ -127,12 +131,15 @@ export default function Index() {
                   </p>
                 </div>
               ) : (
-                <div>
+                <div className="relative z-10">
                   <span className="font-mono text-4xl font-bold leading-none text-foreground">
                     {dashboard.competitorCount}
                   </span>
                   <p className="text-xs text-muted-foreground mt-1.5">competitors tracked</p>
                 </div>
+              )}
+              {chartData.competitorSparkline.length > 0 && (
+                <Sparkline data={chartData.competitorSparkline} color="#00D4AA" animationDelay={200} />
               )}
             </div>
 
@@ -141,6 +148,9 @@ export default function Index() {
               value={dashboard.gapCount}
               icon={TrendingUp}
               loading={dashboard.isLoading}
+              sparklineData={chartData.gapSparkline}
+              sparklineColor="#6C5CE7"
+              sparklineDelay={400}
             />
             <StatCard
               title="Opportunity Score"
@@ -149,6 +159,9 @@ export default function Index() {
               decimals={1}
               color={scoreColor(dashboard.avgScore)}
               loading={dashboard.isLoading}
+              sparklineData={chartData.scoreSparkline}
+              sparklineColor="#FFBE0B"
+              sparklineDelay={600}
             />
             <StatCard
               title="Unread Alerts"
@@ -156,13 +169,16 @@ export default function Index() {
               icon={Bell}
               pulse={dashboard.unreadAlerts > 0}
               loading={dashboard.isLoading}
+              sparklineData={chartData.alertSparkline}
+              sparklineColor="#FF6B35"
+              sparklineDelay={800}
             />
           </div>
         </AnimatedItem>
 
         {/* Threat Radar */}
         <AnimatedItem>
-          <ThreatRadar competitors={dashboard.competitors} loading={dashboard.isLoading} />
+          <ThreatRadarChart competitors={dashboard.competitors} loading={dashboard.isLoading} />
         </AnimatedItem>
 
         {/* Middle row */}
@@ -172,21 +188,30 @@ export default function Index() {
               <RecentReports reports={dashboard.recentReports} loading={dashboard.isLoading} />
             </div>
             <div className="lg:col-span-2">
-              <TopOpportunities opportunities={dashboard.topOpportunities} loading={dashboard.isLoading} />
+              <TopOpportunities
+                opportunities={dashboard.topOpportunities}
+                loading={dashboard.isLoading}
+                gapDistribution={chartData.gapDistribution}
+              />
             </div>
           </div>
         </AnimatedItem>
 
-        {/* Bottom row */}
+        {/* Activity + Alerts row */}
         <AnimatedItem>
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
             <div className="lg:col-span-3">
-              <AlertFeed alerts={dashboard.recentAlerts} loading={dashboard.isLoading} />
+              <ActivityTimeline data={chartData.activityTimeline} loading={chartData.isLoading} />
             </div>
             <div className="lg:col-span-2">
-              <SuggestedCompetitors loading={dashboard.isLoading} />
+              <AlertFeed alerts={dashboard.recentAlerts} loading={dashboard.isLoading} />
             </div>
           </div>
+        </AnimatedItem>
+
+        {/* Suggested Competitors */}
+        <AnimatedItem>
+          <SuggestedCompetitors loading={dashboard.isLoading} />
         </AnimatedItem>
       </AnimatedPage>
 
