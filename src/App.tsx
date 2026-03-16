@@ -19,6 +19,7 @@ import Reports from "./pages/Reports";
 import ReportDetail from "./pages/ReportDetail";
 import Battlecards from "./pages/Battlecards";
 import BattlecardDetail from "./pages/BattlecardDetail";
+import MarketGapsPage from "./pages/MarketGaps";
 
 const queryClient = new QueryClient();
 
