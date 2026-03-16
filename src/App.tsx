@@ -36,7 +36,7 @@ const App = () => (
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-              <Route path="/competitors" element={<ProtectedRoute><StubPage title="Competitors" description="Track and analyze your competitive landscape." icon={Users} /></ProtectedRoute>} />
+              <Route path="/competitors" element={<ProtectedRoute><Competitors /></ProtectedRoute>} />
               <Route path="/reports" element={<ProtectedRoute><StubPage title="Reports" description="Generate competitive intelligence reports." icon={FileText} /></ProtectedRoute>} />
               <Route path="/battlecards" element={<ProtectedRoute><StubPage title="Battlecards" description="Sales-ready competitive battlecards." icon={Shield} /></ProtectedRoute>} />
               <Route path="/market-gaps" element={<ProtectedRoute><StubPage title="Market Gaps" description="Discover opportunities your competitors are missing." icon={TrendingUp} /></ProtectedRoute>} />
