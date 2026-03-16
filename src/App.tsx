@@ -17,6 +17,8 @@ import Competitors from "./pages/Competitors";
 import CompetitorDetail from "./pages/CompetitorDetail";
 import Reports from "./pages/Reports";
 import ReportDetail from "./pages/ReportDetail";
+import Battlecards from "./pages/Battlecards";
+import BattlecardDetail from "./pages/BattlecardDetail";
 
 const queryClient = new QueryClient();
 
@@ -43,7 +45,8 @@ const App = () => (
               <Route path="/competitors/:id" element={<ProtectedRoute><CompetitorDetail /></ProtectedRoute>} />
               <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
               <Route path="/reports/:id" element={<ProtectedRoute><ReportDetail /></ProtectedRoute>} />
-              <Route path="/battlecards" element={<ProtectedRoute><StubPage title="Battlecards" description="Sales-ready competitive battlecards." icon={Shield} /></ProtectedRoute>} />
+              <Route path="/battlecards" element={<ProtectedRoute><Battlecards /></ProtectedRoute>} />
+              <Route path="/battlecards/:id" element={<ProtectedRoute><BattlecardDetail /></ProtectedRoute>} />
               <Route path="/market-gaps" element={<ProtectedRoute><StubPage title="Market Gaps" description="Discover opportunities your competitors are missing." icon={TrendingUp} /></ProtectedRoute>} />
               <Route path="/comparisons" element={<ProtectedRoute><StubPage title="Comparisons" description="Side-by-side competitor comparisons." icon={GitCompareArrows} /></ProtectedRoute>} />
               <Route path="/alerts" element={<ProtectedRoute><StubPage title="Alerts" description="Real-time competitive movement alerts." icon={Bell} /></ProtectedRoute>} />
