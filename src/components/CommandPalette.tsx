@@ -110,7 +110,7 @@ export function CommandPalette({
       },
       {
         id: "act-chat",
-        label: "Open Ask RivalScope",
+        label: `Open Ask ${appName}`,
         icon: Sparkles,
         group: "Actions",
         action: () => { close(); onOpenChat?.(); },
