@@ -89,6 +89,7 @@ export default function ReportDetail() {
   const { user } = useAuth();
   const { data: report, isLoading, refetch } = useReportDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const { exporting, exportPdf } = useExportPdf();
   useDocumentTitle(report?.title || "Report");
 
