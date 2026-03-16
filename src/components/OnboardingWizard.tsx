@@ -140,10 +140,10 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
             {step === 1 && (
               <div className="text-center space-y-6">
                 <h1 className="font-display text-4xl text-foreground tracking-tight" style={{ letterSpacing: "-0.02em" }}>
-                  RivalScope
+                  {appName}
                 </h1>
                 <div>
-                  <h2 className="text-xl font-bold text-foreground">Welcome to RivalScope</h2>
+                  <h2 className="text-xl font-bold text-foreground">Welcome to {appName}</h2>
                   <p className="text-sm text-muted-foreground mt-2">
                     Let's set up your competitive intelligence command center in 60 seconds.
                   </p>

@@ -23,6 +23,7 @@ export default function Index() {
   const { user } = useAuth();
   const dashboard = useDashboardData();
   const appName = settings?.app_name || "RivalScope";
+  useDocumentTitle("Dashboard");
   const firstName = user?.user_metadata?.full_name?.split(" ")[0] || "there";
 
   return (

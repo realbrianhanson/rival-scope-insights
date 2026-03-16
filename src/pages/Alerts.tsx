@@ -337,7 +337,7 @@ function EmptyState() {
       </div>
       <p className="text-sm font-medium text-foreground mb-1">No alerts yet</p>
       <p className="text-xs text-muted-foreground max-w-md mx-auto">
-        Once you start scanning competitors, RivalScope will detect changes and alert you here.
+        Once you start scanning competitors, changes will be detected and alerted here.
       </p>
     </div>
   );

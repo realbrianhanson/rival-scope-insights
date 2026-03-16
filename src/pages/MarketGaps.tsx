@@ -61,6 +61,7 @@ function ScoreCircle({ score, size = "md" }: { score: number; size?: "sm" | "md"
 }
 
 export default function MarketGaps() {
+  useDocumentTitle("Market Gaps");
   const { data: gaps, isLoading } = useMarketGaps();
   const { data: competitors } = useCompetitors();
   const updateStatus = useUpdateGapStatus();

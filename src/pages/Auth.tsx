@@ -82,7 +82,7 @@ export default function Auth() {
         {/* Logo */}
         <div className="text-center mb-8">
           <h1 className="font-display text-4xl text-foreground tracking-tight" style={{ letterSpacing: "-0.02em" }}>
-            RivalScope
+            {appName}
           </h1>
           <p className="text-muted-foreground text-sm mt-2">Competitive intelligence, simplified.</p>
         </div>

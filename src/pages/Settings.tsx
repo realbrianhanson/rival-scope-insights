@@ -40,6 +40,7 @@ const INDUSTRIES = [
 ];
 
 export default function SettingsPage() {
+  useDocumentTitle("Settings");
   return (
     <AppLayout>
       <AnimatedPage className="space-y-6">

@@ -22,6 +22,7 @@ import { Plus, GitCompareArrows, Loader2 } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export default function Comparisons() {
+  useDocumentTitle("Comparisons");
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data: comparisons, isLoading, refetch } = useComparisons();

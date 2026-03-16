@@ -15,6 +15,7 @@ import { Shield, Search, Loader2, Zap } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export default function Battlecards() {
+  useDocumentTitle("Battlecards");
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data: battlecards, isLoading } = useBattlecards();
