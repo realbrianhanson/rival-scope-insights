@@ -31,6 +31,7 @@ import {
   Moon,
   Info,
 } from "lucide-react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 const INDUSTRIES = [
   "SaaS", "E-commerce", "Fintech", "Healthcare", "EdTech",
