@@ -708,6 +708,50 @@ export type Database = {
           },
         ]
       }
+      shared_links: {
+        Row: {
+          content_id: string
+          content_type: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          share_token: string
+          user_id: string
+          view_count: number
+        }
+        Insert: {
+          content_id: string
+          content_type: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          share_token: string
+          user_id: string
+          view_count?: number
+        }
+        Update: {
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          share_token?: string
+          user_id?: string
+          view_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shared_links_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
