@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
@@ -93,6 +93,14 @@ export function useScanCompetitor() {
     },
     [queryClient]
   );
+
+  useEffect(() => {
+    return () => {
+      // Clean up all active polling intervals on unmount
+      Object.values(pollRefs.current).forEach(clearInterval);
+      pollRefs.current = {};
+    };
+  }, []);
 
   return { startScan, getPhase };
 }
