@@ -17,6 +17,8 @@ import Competitors from "./pages/Competitors";
 import CompetitorDetail from "./pages/CompetitorDetail";
 import Reports from "./pages/Reports";
 import ReportDetail from "./pages/ReportDetail";
+import Battlecards from "./pages/Battlecards";
+import BattlecardDetail from "./pages/BattlecardDetail";
 
 const queryClient = new QueryClient();
 
