@@ -8,7 +8,6 @@ import { StatCard } from "@/components/dashboard/StatCard";
 import { RecentReports } from "@/components/dashboard/RecentReports";
 import { TopOpportunities } from "@/components/dashboard/TopOpportunities";
 import { AlertFeed } from "@/components/dashboard/AlertFeed";
-import { DashboardFAB } from "@/components/dashboard/DashboardFAB";
 import { Target, TrendingUp, Zap, Bell } from "lucide-react";
 
 const scoreColor = (score: number) => {
@@ -87,8 +86,6 @@ export default function Index() {
           <AlertFeed alerts={dashboard.recentAlerts} loading={dashboard.isLoading} />
         </AnimatedItem>
       </AnimatedPage>
-
-      <DashboardFAB />
     </AppLayout>
   );
 }

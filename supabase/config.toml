@@ -1,1 +1,4 @@
 project_id = "uyruseymwkprcsolnzek"
+
+[functions.chat-with-rivalscope]
+verify_jwt = false

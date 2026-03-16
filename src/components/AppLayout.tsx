@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { AppSidebar } from "./AppSidebar";
 import { MobileNav } from "./MobileNav";
+import { AskRivalScopeButton } from "./AskRivalScopePanel";
 
 export function AppLayout({ children }: { children: ReactNode }) {
   return (
@@ -12,6 +13,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </div>
       </main>
       <MobileNav />
+      <AskRivalScopeButton />
     </div>
   );
 }
