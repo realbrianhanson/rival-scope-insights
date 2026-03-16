@@ -20,9 +20,10 @@ import {
   ArrowLeft,
   Shield,
   RefreshCw,
-  Printer,
+  Download,
   Loader2,
 } from "lucide-react";
+import { useExportPdf } from "@/hooks/useExportPdf";
 
 function DetailSkeleton() {
   return (
