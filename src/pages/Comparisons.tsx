@@ -20,6 +20,8 @@ import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 import { Plus, GitCompareArrows, Loader2 } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
+import { ComparisonBarsIllustration } from "@/components/empty-states/ComparisonBarsIllustration";
 
 export default function Comparisons() {
   useDocumentTitle("Comparisons");
