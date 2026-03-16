@@ -20,6 +20,8 @@ import ReportDetail from "./pages/ReportDetail";
 import Battlecards from "./pages/Battlecards";
 import BattlecardDetail from "./pages/BattlecardDetail";
 import MarketGapsPage from "./pages/MarketGaps";
+import ComparisonsPage from "./pages/Comparisons";
+import ComparisonDetail from "./pages/ComparisonDetail";
 
 const queryClient = new QueryClient();
 
