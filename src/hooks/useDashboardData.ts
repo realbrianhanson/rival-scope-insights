@@ -6,15 +6,15 @@ export function useDashboardData() {
   const { user } = useAuth();
   const userId = user?.id;
 
-  const competitorCount = useQuery({
+  const competitorsQuery = useQuery({
     queryKey: ["dashboard-competitors", userId],
     queryFn: async () => {
-      const { count, error } = await supabase
+      const { data, error } = await supabase
         .from("competitors")
-        .select("*", { count: "exact", head: true })
+        .select("id, name, threat_score, threat_level, status")
         .eq("status", "active");
       if (error) throw error;
-      return count ?? 0;
+      return data ?? [];
     },
     enabled: !!userId,
   });
@@ -86,14 +86,24 @@ export function useDashboardData() {
     enabled: !!userId,
   });
 
+  const competitors = competitorsQuery.data ?? [];
+  const competitorCount = competitors.length;
   const gapCount = marketGaps.data?.length ?? 0;
   const avgScore =
     marketGaps.data && marketGaps.data.length > 0
       ? marketGaps.data.reduce((sum, g) => sum + g.opportunity_score, 0) / marketGaps.data.length
       : 0;
 
+  // Find highest threat competitor
+  const scoredCompetitors = competitors.filter((c) => c.threat_score !== null);
+  const highestThreat = scoredCompetitors.length > 0
+    ? scoredCompetitors.reduce((max, c) => (c.threat_score ?? 0) > (max.threat_score ?? 0) ? c : max, scoredCompetitors[0])
+    : null;
+
   return {
-    competitorCount: competitorCount.data ?? 0,
+    competitorCount,
+    competitors,
+    highestThreat,
     gapCount,
     avgScore,
     unreadAlerts: unreadAlerts.data ?? 0,
@@ -101,7 +111,7 @@ export function useDashboardData() {
     topOpportunities: topOpportunities.data ?? [],
     recentAlerts: recentAlerts.data ?? [],
     isLoading:
-      competitorCount.isLoading ||
+      competitorsQuery.isLoading ||
       marketGaps.isLoading ||
       unreadAlerts.isLoading ||
       recentReports.isLoading ||

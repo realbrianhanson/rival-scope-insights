@@ -208,8 +208,9 @@ export default function CompetitorDetail() {
 
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 <h1 className="text-[28px] font-bold text-foreground">{comp.name}</h1>
+                <ThreatScoreBadge score={(comp as any).threat_score ?? null} level={(comp as any).threat_level ?? null} size="lg" />
                 <span className={cn(
                   "text-[11px] uppercase tracking-[0.05em] font-medium px-3 py-1 rounded-full",
                   comp.status === "active" ? "bg-primary/10 text-primary"
