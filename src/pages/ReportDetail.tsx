@@ -21,7 +21,9 @@ import {
   RefreshCw,
   Loader2,
   ExternalLink,
+  Download,
 } from "lucide-react";
+import { useExportPdf } from "@/hooks/useExportPdf";
 
 const reportTypeColors: Record<string, string> = {
   full_intel: "bg-[hsl(164,100%,42%)]/10 text-[hsl(164,100%,42%)]",
@@ -83,6 +85,7 @@ export default function ReportDetail() {
   const { user } = useAuth();
   const { data: report, isLoading, refetch } = useReportDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  const { exporting, exportPdf } = useExportPdf();
   useDocumentTitle(report?.title || "Report");
 
   const fullReport = report?.full_report as any;
@@ -170,10 +173,16 @@ export default function ReportDetail() {
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-muted">{report.ai_model_used}</span>
               </div>
             </div>
-            <Button variant="outline" size="sm" onClick={handleRegenerate} disabled={regenerating}>
-              {regenerating ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-1.5 h-4 w-4" />}
-              Regenerate Report
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={() => exportPdf("report", report.id)} disabled={exporting}>
+                {exporting ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Download className="mr-1.5 h-4 w-4" />}
+                Export PDF
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleRegenerate} disabled={regenerating}>
+                {regenerating ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-1.5 h-4 w-4" />}
+                Regenerate Report
+              </Button>
+            </div>
           </div>
         </AnimatedItem>
 

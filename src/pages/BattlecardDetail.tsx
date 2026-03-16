@@ -20,9 +20,10 @@ import {
   ArrowLeft,
   Shield,
   RefreshCw,
-  Printer,
+  Download,
   Loader2,
 } from "lucide-react";
+import { useExportPdf } from "@/hooks/useExportPdf";
 
 function DetailSkeleton() {
   return (
@@ -46,6 +47,7 @@ export default function BattlecardDetail() {
   const { user } = useAuth();
   const { data: bc, isLoading, refetch } = useBattlecardDetail(id);
   const [regenerating, setRegenerating] = useState(false);
+  const { exporting, exportPdf } = useExportPdf();
 
   const comp = bc?.competitors as any;
   useDocumentTitle(comp?.name ? `Battlecard: ${comp.name}` : "Battlecard");
@@ -118,13 +120,13 @@ export default function BattlecardDetail() {
               </p>
             </div>
             <div className="flex gap-2 print:hidden">
+              <Button size="sm" variant="outline" onClick={() => exportPdf("battlecard", bc.id)} disabled={exporting}>
+                {exporting ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Download className="mr-1.5 h-4 w-4" />}
+                Export PDF
+              </Button>
               <Button size="sm" variant="outline" onClick={handleRegenerate} disabled={regenerating}>
                 {regenerating ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-1.5 h-4 w-4" />}
                 Regenerate
-              </Button>
-              <Button size="sm" variant="outline" onClick={() => window.print()}>
-                <Printer className="mr-1.5 h-4 w-4" />
-                Print / Export
               </Button>
             </div>
           </div>

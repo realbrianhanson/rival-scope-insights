@@ -121,3 +121,56 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
+
+/* Print styles */
+@media print {
+  body {
+    background: white !important;
+    color: #1a1a2e !important;
+  }
+
+  /* Hide non-content elements */
+  nav, aside,
+  .fixed,
+  [data-sidebar],
+  button:not([data-print-visible]),
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .bg-card, .bg-background {
+    background: white !important;
+    box-shadow: none !important;
+  }
+
+  .border-border, .border {
+    border-color: #e0e0e0 !important;
+  }
+
+  .border-l-primary {
+    border-left-color: #00D4AA !important;
+  }
+
+  .text-foreground {
+    color: #1a1a2e !important;
+  }
+
+  .text-muted-foreground {
+    color: #6B6B80 !important;
+  }
+
+  .text-primary {
+    color: #00D4AA !important;
+  }
+
+  @page {
+    margin: 16mm;
+    size: A4;
+  }
+}
