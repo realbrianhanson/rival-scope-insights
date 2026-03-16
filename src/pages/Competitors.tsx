@@ -6,11 +6,14 @@ import { CompetitorCard } from "@/components/competitors/CompetitorCard";
 import { AddCompetitorModal } from "@/components/competitors/AddCompetitorModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Search, Users } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useScanCompetitor } from "@/hooks/useScanCompetitor";
 import { useAuth } from "@/hooks/useAuth";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useAppSettings } from "@/hooks/useAppSettings";
+import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
+import { CrosshairIllustration } from "@/components/empty-states/CrosshairIllustration";
 import { useAppSettings } from "@/hooks/useAppSettings";
 
 type FilterTab = "all" | "active" | "paused" | "archived";
