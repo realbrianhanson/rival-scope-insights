@@ -173,10 +173,16 @@ export default function ReportDetail() {
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-muted">{report.ai_model_used}</span>
               </div>
             </div>
-            <Button variant="outline" size="sm" onClick={handleRegenerate} disabled={regenerating}>
-              {regenerating ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-1.5 h-4 w-4" />}
-              Regenerate Report
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={() => exportPdf("report", report.id)} disabled={exporting}>
+                {exporting ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Download className="mr-1.5 h-4 w-4" />}
+                Export PDF
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleRegenerate} disabled={regenerating}>
+                {regenerating ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-1.5 h-4 w-4" />}
+                Regenerate Report
+              </Button>
+            </div>
           </div>
         </AnimatedItem>
 

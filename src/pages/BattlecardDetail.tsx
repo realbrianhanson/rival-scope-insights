@@ -120,13 +120,13 @@ export default function BattlecardDetail() {
               </p>
             </div>
             <div className="flex gap-2 print:hidden">
+              <Button size="sm" variant="outline" onClick={() => exportPdf("battlecard", bc.id)} disabled={exporting}>
+                {exporting ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Download className="mr-1.5 h-4 w-4" />}
+                Export PDF
+              </Button>
               <Button size="sm" variant="outline" onClick={handleRegenerate} disabled={regenerating}>
                 {regenerating ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-1.5 h-4 w-4" />}
                 Regenerate
-              </Button>
-              <Button size="sm" variant="outline" onClick={() => window.print()}>
-                <Printer className="mr-1.5 h-4 w-4" />
-                Print / Export
               </Button>
             </div>
           </div>
