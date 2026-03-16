@@ -24,6 +24,9 @@ const tabs: { key: FilterTab; label: string }[] = [
 
 export default function Competitors() {
   const { user } = useAuth();
+  const { data: appSettings } = useAppSettings();
+  const appName = appSettings?.app_name || "RivalScope";
+  useDocumentTitle("Competitors");
   const { data: competitors, isLoading } = useCompetitors();
   const { data: lastAnalyzedMap } = useLastAnalyzedMap();
   const [modalOpen, setModalOpen] = useState(false);
