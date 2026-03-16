@@ -21,17 +21,7 @@ import { cn } from "@/lib/utils";
 import type { Competitor } from "@/hooks/useCompetitors";
 import { useUpdateCompetitorStatus } from "@/hooks/useCompetitors";
 import { ThreatScoreBadge } from "@/components/dashboard/ThreatRadar";
-import { formatDistanceToNow } from "date-fns";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import type { Competitor } from "@/hooks/useCompetitors";
-import { useUpdateCompetitorStatus } from "@/hooks/useCompetitors";
+
 
 type ScanPhase = "idle" | "scanning" | "analyzing";
 
