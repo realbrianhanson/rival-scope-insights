@@ -204,6 +204,7 @@ export default function ReportDetail() {
           {report.report_type === "gap_analysis" && fullReport && <GapAnalysisSection report={fullReport} />}
           {report.report_type === "strengths_weaknesses" && fullReport && <StrengthsWeaknessesSection report={fullReport} />}
           {report.report_type === "review_sentiment" && fullReport && <ReviewSentimentSection report={fullReport} />}
+          {report.report_type === "executive_briefing" && fullReport && <ExecutiveBriefingSection report={fullReport} />}
         </AnimatedItem>
       </AnimatedPage>
     </AppLayout>
