@@ -1,6 +1,7 @@
 import { LayoutDashboard, Users, TrendingUp, Bell, Settings } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useUnreadAlertCount } from "@/hooks/useAlerts";
 
 const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
