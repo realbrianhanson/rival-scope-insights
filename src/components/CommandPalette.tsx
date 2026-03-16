@@ -123,7 +123,7 @@ export function CommandPalette({
         action: () => { toggleTheme(); close(); },
       },
     ],
-    [go, close, theme, toggleTheme, onAddCompetitor, onGenerateBriefing, onOpenChat]
+    [go, close, theme, toggleTheme, onAddCompetitor, onGenerateBriefing, onOpenChat, appName]
   );
 
   const dynamicItems: CommandItem[] = useMemo(() => {

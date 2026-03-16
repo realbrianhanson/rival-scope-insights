@@ -323,7 +323,7 @@ export default function AlertsPage() {
   );
 }
 
-function EmptyState() {
+function EmptyState({ appName = "RivalScope" }: { appName?: string }) {
   return (
     <EmptyStateWrapper
       illustration={<BellSwingIllustration />}
