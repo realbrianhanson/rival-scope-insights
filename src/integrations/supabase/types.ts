@@ -283,6 +283,10 @@ export type Database = {
           messaging_summary: string | null
           snapshot_data: Json
           tech_stack: Json | null
+          threat_level: string | null
+          threat_reason: string | null
+          threat_score: number | null
+          threat_trend: string | null
           user_id: string
         }
         Insert: {
@@ -293,6 +297,10 @@ export type Database = {
           messaging_summary?: string | null
           snapshot_data: Json
           tech_stack?: Json | null
+          threat_level?: string | null
+          threat_reason?: string | null
+          threat_score?: number | null
+          threat_trend?: string | null
           user_id: string
         }
         Update: {
@@ -303,6 +311,10 @@ export type Database = {
           messaging_summary?: string | null
           snapshot_data?: Json
           tech_stack?: Json | null
+          threat_level?: string | null
+          threat_reason?: string | null
+          threat_score?: number | null
+          threat_trend?: string | null
           user_id?: string
         }
         Relationships: [
@@ -331,6 +343,8 @@ export type Database = {
           name: string
           review_sources: Json | null
           status: string
+          threat_level: string | null
+          threat_score: number | null
           updated_at: string
           user_id: string
           website_url: string
@@ -343,6 +357,8 @@ export type Database = {
           name: string
           review_sources?: Json | null
           status?: string
+          threat_level?: string | null
+          threat_score?: number | null
           updated_at?: string
           user_id: string
           website_url: string
@@ -355,6 +371,8 @@ export type Database = {
           name?: string
           review_sources?: Json | null
           status?: string
+          threat_level?: string | null
+          threat_score?: number | null
           updated_at?: string
           user_id?: string
           website_url?: string

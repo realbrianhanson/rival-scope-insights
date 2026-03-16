@@ -44,6 +44,8 @@ export default function Competitors() {
     };
   }, [competitors]);
 
+  const [sortByThreat, setSortByThreat] = useState(false);
+
   const filtered = useMemo(() => {
     if (!competitors) return [];
     let list = competitors;
@@ -56,8 +58,11 @@ export default function Competitors() {
           c.website_url.toLowerCase().includes(q)
       );
     }
+    if (sortByThreat) {
+      list = [...list].sort((a, b) => ((b as any).threat_score ?? -1) - ((a as any).threat_score ?? -1));
+    }
     return list;
-  }, [competitors, activeTab, search]);
+  }, [competitors, activeTab, search, sortByThreat]);
 
   return (
     <AppLayout>
@@ -75,6 +80,17 @@ export default function Competitors() {
                   className="pl-9 w-[220px]"
                 />
               </div>
+              <button
+                onClick={() => setSortByThreat(!sortByThreat)}
+                className={cn(
+                  "text-xs font-medium px-3 py-2 rounded-lg border transition-colors",
+                  sortByThreat
+                    ? "bg-primary/10 text-primary border-primary/30"
+                    : "bg-card text-muted-foreground border-border hover:text-foreground"
+                )}
+              >
+                Sort by Threat
+              </button>
               <Button onClick={() => setModalOpen(true)}>
                 <Plus className="mr-1.5 h-4 w-4" />
                 Add Competitor

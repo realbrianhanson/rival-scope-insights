@@ -19,14 +19,11 @@ function hashContent(content: string): string {
 }
 
 function tryParseJSON(text: string): any {
-  // Try direct parse
   try { return JSON.parse(text); } catch {}
-  // Try extracting JSON from markdown code blocks
   const codeBlock = text.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (codeBlock) {
     try { return JSON.parse(codeBlock[1].trim()); } catch {}
   }
-  // Try finding first { to last }
   const first = text.indexOf("{");
   const last = text.lastIndexOf("}");
   if (first !== -1 && last > first) {
@@ -110,7 +107,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Filter for reviews if review_sentiment
     if (analysis_type === "review_sentiment") {
       const reviewResults = scrapeResults.filter((r: any) => r.page_type === "review");
       if (reviewResults.length === 0) {
@@ -121,7 +117,6 @@ Deno.serve(async (req) => {
       scrapeResults = reviewResults;
     }
 
-    // Build content for AI (truncate to fit context)
     const contentParts = scrapeResults.slice(0, 30).map((r: any) =>
       `--- PAGE: ${r.page_url} (type: ${r.page_type}) ---\n${(r.raw_content || "").slice(0, 5000)}`
     );
@@ -153,7 +148,6 @@ Deno.serve(async (req) => {
     const { parsed, raw, model: usedModel } = await callAI(LOVABLE_API_KEY, model, systemPrompt, userPrompt);
 
     if (!parsed) {
-      // Save partial report with raw text
       await supabase.from("analysis_reports").insert({
         user_id,
         competitor_id,
@@ -232,6 +226,24 @@ Deno.serve(async (req) => {
     const contentHash = hashContent(rawConcat);
     const techStack = parsed.tech_stack_hints || null;
 
+    // STEP 4 — Threat Score (full_intel only)
+    let threatData: { threat_score: number; threat_level: string; primary_threat_reason: string; trend: string } | null = null;
+
+    if (analysis_type === "full_intel") {
+      try {
+        const threatPrompt = `Based on this competitive intelligence analysis, assign a Threat Score from 1 to 100 that represents how much of a competitive threat this company poses to ${companyName}. Consider: the number and severity of their strengths, their pricing competitiveness, their content/marketing sophistication, their market positioning strength, and any direct overlap with ${companyName}'s target audience.
+
+Return ONLY valid JSON: { "threat_score": integer 1-100, "threat_level": string one of "low"/"moderate"/"high"/"critical", "primary_threat_reason": string one sentence explaining the biggest reason they're a threat, "trend": string one of "increasing"/"stable"/"decreasing" based on available data }`;
+
+        const threatResult = await callAI(LOVABLE_API_KEY, "google/gemini-3-flash-preview", threatPrompt, JSON.stringify(parsed));
+        if (threatResult.parsed && typeof threatResult.parsed.threat_score === "number") {
+          threatData = threatResult.parsed;
+        }
+      } catch (e) {
+        console.error("Threat score generation failed (non-fatal):", e);
+      }
+    }
+
     await supabase.from("competitor_snapshots").insert({
       user_id,
       competitor_id,
@@ -244,16 +256,26 @@ Deno.serve(async (req) => {
       },
       tech_stack: techStack ? { detected: techStack } : null,
       messaging_summary: parsed.messaging_analysis?.value_proposition || parsed.summary || null,
+      threat_score: threatData?.threat_score ?? null,
+      threat_level: threatData?.threat_level ?? null,
+      threat_reason: threatData?.primary_threat_reason ?? null,
+      threat_trend: threatData?.trend ?? null,
     });
 
-    // Update competitor timestamp
-    await supabase.from("competitors").update({ updated_at: new Date().toISOString() }).eq("id", competitor_id);
+    // Update competitor with threat score and timestamp
+    const competitorUpdate: any = { updated_at: new Date().toISOString() };
+    if (threatData) {
+      competitorUpdate.threat_score = threatData.threat_score;
+      competitorUpdate.threat_level = threatData.threat_level;
+    }
+    await supabase.from("competitors").update(competitorUpdate).eq("id", competitor_id);
 
     return new Response(JSON.stringify({
       success: true,
       report_id: reportId,
       analysis_type,
       gaps_found: gaps.length,
+      threat_score: threatData?.threat_score ?? null,
     }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
   } catch (error) {

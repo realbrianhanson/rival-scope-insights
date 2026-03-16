@@ -8,7 +8,9 @@ import { StatCard } from "@/components/dashboard/StatCard";
 import { RecentReports } from "@/components/dashboard/RecentReports";
 import { TopOpportunities } from "@/components/dashboard/TopOpportunities";
 import { AlertFeed } from "@/components/dashboard/AlertFeed";
-import { Target, TrendingUp, Zap, Bell } from "lucide-react";
+import { ThreatRadar } from "@/components/dashboard/ThreatRadar";
+import { Target, TrendingUp, Zap, Bell, ShieldAlert } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const scoreColor = (score: number) => {
   if (score >= 9) return "#FF6B35";
@@ -17,12 +19,20 @@ const scoreColor = (score: number) => {
   return undefined;
 };
 
+const threatColor = (score: number) => {
+  if (score >= 76) return "#FF4757";
+  if (score >= 51) return "#FF6B35";
+  if (score >= 26) return "#FFBE0B";
+  return "#00D4AA";
+};
+
 export default function Index() {
   const { data: settings } = useAppSettings();
   const { user } = useAuth();
   const dashboard = useDashboardData();
   const appName = settings?.app_name || "RivalScope";
   useDocumentTitle("Dashboard");
+  const navigate = useNavigate();
   const firstName = user?.user_metadata?.full_name?.split(" ")[0] || "there";
 
   return (
@@ -39,12 +49,40 @@ export default function Index() {
         {/* Stat cards */}
         <AnimatedItem>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            <StatCard
-              title="Competitors Tracked"
-              value={dashboard.competitorCount}
-              icon={Target}
-              loading={dashboard.isLoading}
-            />
+            {/* Threat Overview — replaces simple competitor count */}
+            <div className="bg-card border border-border rounded-2xl p-6 transition-all duration-150 hover:border-border-active hover:shadow-card-hover">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-medium uppercase tracking-[0.05em] text-muted-foreground">
+                  Threat Overview
+                </span>
+                <div className="h-9 w-9 rounded-lg bg-primary/[0.08] flex items-center justify-center">
+                  <ShieldAlert className="h-[18px] w-[18px] text-primary" />
+                </div>
+              </div>
+              {dashboard.isLoading ? (
+                <div className="h-9 w-16 skeleton-shimmer rounded" />
+              ) : dashboard.highestThreat ? (
+                <div>
+                  <span
+                    className="font-mono text-4xl font-bold leading-none"
+                    style={{ color: threatColor(dashboard.highestThreat.threat_score ?? 0) }}
+                  >
+                    {dashboard.highestThreat.threat_score}
+                  </span>
+                  <p className="text-xs text-muted-foreground mt-1.5 truncate">
+                    {dashboard.highestThreat.name} · {dashboard.competitorCount} tracked
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <span className="font-mono text-4xl font-bold leading-none text-foreground">
+                    {dashboard.competitorCount}
+                  </span>
+                  <p className="text-xs text-muted-foreground mt-1.5">competitors tracked</p>
+                </div>
+              )}
+            </div>
+
             <StatCard
               title="Market Gaps Found"
               value={dashboard.gapCount}
@@ -67,6 +105,11 @@ export default function Index() {
               loading={dashboard.isLoading}
             />
           </div>
+        </AnimatedItem>
+
+        {/* Threat Radar */}
+        <AnimatedItem>
+          <ThreatRadar competitors={dashboard.competitors} loading={dashboard.isLoading} />
         </AnimatedItem>
 
         {/* Middle row */}
