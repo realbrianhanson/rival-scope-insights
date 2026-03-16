@@ -29,6 +29,8 @@ const TOTAL_STEPS = 4;
 
 export default function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
   const { user } = useAuth();
+  const { data: appSettings } = useAppSettings();
+  const appName = appSettings?.app_name || "RivalScope";
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [step, setStep] = useState(1);
