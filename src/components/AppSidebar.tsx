@@ -46,7 +46,7 @@ export function AppSidebar({ onOpenPalette }: { onOpenPalette?: () => void }) {
   return (
     <aside
       className={cn(
-        "hidden md:flex flex-col h-screen bg-background border-r border-border transition-all duration-200 ease-in-out flex-shrink-0",
+        "hidden md:flex flex-col h-screen bg-background border-r border-border transition-all duration-200 ease-in-out flex-shrink-0 relative sidebar-glow",
         collapsed ? "w-[72px]" : "w-[260px]"
       )}
     >
