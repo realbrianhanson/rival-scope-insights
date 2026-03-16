@@ -26,7 +26,7 @@ export function AskRivalScopeButton() {
           "fixed bottom-20 md:bottom-8 right-6 z-40",
           "h-14 w-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center",
           "shadow-[0_4px_20px_hsl(var(--primary)/0.35)] hover:shadow-glow",
-          "transition-all duration-150 hover:scale-105 active:scale-95"
+          "transition-all duration-150 hover:scale-105 active:scale-95 fab-breathe"
         )}
       >
         <Sparkles className="h-6 w-6" />

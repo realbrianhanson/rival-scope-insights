@@ -105,7 +105,9 @@
   }
 }
 
-/* Skeleton shimmer */
+/* ===================== */
+/* Skeleton shimmer      */
+/* ===================== */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -122,7 +124,218 @@
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
-/* Print styles */
+/* ===================== */
+/* Scrollbar styling     */
+/* ===================== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted)) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
+
+/* ===================== */
+/* Card polish           */
+/* ===================== */
+.bg-card {
+  border-top: 1px solid hsl(var(--foreground) / 0.03);
+}
+
+/* Card hover micro-lift */
+.hover\:shadow-card-hover:hover {
+  transform: translateY(-1px);
+}
+
+/* ===================== */
+/* Button shimmer effect */
+/* ===================== */
+@keyframes btn-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(var(--foreground) / 0.08) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.btn-shimmer:hover::after {
+  animation: btn-shimmer 0.6s ease-out;
+}
+
+/* ===================== */
+/* FAB breathing pulse   */
+/* ===================== */
+@keyframes fab-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.fab-breathe {
+  animation: fab-breathe 3s ease-in-out infinite;
+}
+
+/* ===================== */
+/* Sidebar glow overlay  */
+/* ===================== */
+.sidebar-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--primary) / 0.03),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Active nav item glow */
+.nav-active-glow {
+  box-shadow: -2px 0 12px hsl(var(--primary) / 0.08);
+}
+
+/* ===================== */
+/* Auth page animations  */
+/* ===================== */
+@keyframes mesh-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(40px, -30px) scale(1.05); }
+  50% { transform: translate(-20px, 20px) scale(0.95); }
+  75% { transform: translate(30px, 40px) scale(1.02); }
+}
+
+@keyframes mesh-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-50px, 30px) scale(1.08); }
+  66% { transform: translate(30px, -40px) scale(0.96); }
+}
+
+@keyframes mesh-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(20px, 40px) scale(1.03); }
+  40% { transform: translate(-40px, -20px) scale(0.97); }
+  60% { transform: translate(35px, -30px) scale(1.06); }
+  80% { transform: translate(-25px, 25px) scale(0.98); }
+}
+
+@keyframes mesh-drift-4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, -30px) scale(1.04); }
+}
+
+.mesh-circle-1 { animation: mesh-drift-1 25s ease-in-out infinite; }
+.mesh-circle-2 { animation: mesh-drift-2 30s ease-in-out infinite; }
+.mesh-circle-3 { animation: mesh-drift-3 22s ease-in-out infinite; }
+.mesh-circle-4 { animation: mesh-drift-4 28s ease-in-out infinite; }
+
+/* Noise texture overlay */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  z-index: 1;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: hsl(var(--card) / 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid hsl(var(--foreground) / 0.05);
+}
+
+/* Glassmorphism modal */
+.glass-modal {
+  background: hsl(var(--card) / 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid hsl(var(--foreground) / 0.05) !important;
+}
+
+/* ===================== */
+/* Score ring component  */
+/* ===================== */
+.score-ring-glow {
+  filter: drop-shadow(0 0 6px var(--ring-color, transparent));
+}
+
+/* ===================== */
+/* Toast polish          */
+/* ===================== */
+[data-sonner-toaster] [data-sonner-toast] {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type="success"] {
+  border-left: 3px solid hsl(164 100% 42%) !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type="error"] {
+  border-left: 3px solid hsl(4 90% 58%) !important;
+}
+
+/* ===================== */
+/* Badge gradient        */
+/* ===================== */
+.badge-gradient-primary {
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(var(--primary) / 0.06));
+}
+
+.badge-gradient-accent {
+  background: linear-gradient(135deg, hsl(var(--accent) / 0.15), hsl(var(--accent) / 0.06));
+}
+
+.badge-gradient-warning {
+  background: linear-gradient(135deg, hsl(var(--warning) / 0.15), hsl(var(--warning) / 0.06));
+}
+
+/* ===================== */
+/* Print styles          */
+/* ===================== */
 @media print {
   body {
     background: white !important;
@@ -134,7 +347,7 @@
   .fixed,
   [data-sidebar],
   button:not([data-print-visible]),
-  .print\\:hidden {
+  .print\:hidden {
     display: none !important;
   }
 
