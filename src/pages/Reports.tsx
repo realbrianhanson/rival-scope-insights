@@ -66,6 +66,7 @@ const progressSteps = [
 ];
 
 export default function Reports() {
+  useDocumentTitle("Reports");
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data: competitors } = useCompetitors();
