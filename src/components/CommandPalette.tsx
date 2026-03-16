@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useAppSettings } from "@/hooks/useAppSettings";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -61,6 +62,8 @@ export function CommandPalette({
   const { theme, toggleTheme } = useTheme();
   const { data: competitors } = useCompetitors();
   const { data: reports } = useReports();
+  const { data: appSettings } = useAppSettings();
+  const appName = appSettings?.app_name || "RivalScope";
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -107,7 +110,7 @@ export function CommandPalette({
       },
       {
         id: "act-chat",
-        label: "Open Ask RivalScope",
+        label: `Open Ask ${appName}`,
         icon: Sparkles,
         group: "Actions",
         action: () => { close(); onOpenChat?.(); },
@@ -120,7 +123,7 @@ export function CommandPalette({
         action: () => { toggleTheme(); close(); },
       },
     ],
-    [go, close, theme, toggleTheme, onAddCompetitor, onGenerateBriefing, onOpenChat]
+    [go, close, theme, toggleTheme, onAddCompetitor, onGenerateBriefing, onOpenChat, appName]
   );
 
   const dynamicItems: CommandItem[] = useMemo(() => {

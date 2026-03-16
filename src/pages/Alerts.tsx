@@ -178,7 +178,7 @@ export default function AlertsPage() {
               ))}
             </div>
           ) : alerts.length === 0 ? (
-            <EmptyState />
+            <EmptyState appName={appName} />
           ) : (
             <div className="space-y-3">
               {alerts.map((alert) => {
@@ -323,12 +323,12 @@ export default function AlertsPage() {
   );
 }
 
-function EmptyState() {
+function EmptyState({ appName = "RivalScope" }: { appName?: string }) {
   return (
     <EmptyStateWrapper
       illustration={<BellSwingIllustration />}
       heading="No alerts yet"
-      subtext="Once you start scanning competitors, RivalScope will detect changes and alert you here."
+      subtext={`Once you start scanning competitors, ${appName} will detect changes and alert you here.`}
     />
   );
 }

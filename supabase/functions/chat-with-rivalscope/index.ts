@@ -22,12 +22,13 @@ serve(async (req) => {
     if (!user_id || !message) throw new Error("user_id and message are required");
 
     // Step 1: Gather context
-    const [profileRes, competitorsRes, reportsRes, gapsRes, alertsRes] = await Promise.all([
+    const [profileRes, competitorsRes, reportsRes, gapsRes, alertsRes, settingsRes] = await Promise.all([
       supabase.from("profiles").select("company_name, industry").eq("id", user_id).single(),
       supabase.from("competitors").select("id, name, website_url, status").eq("user_id", user_id),
       supabase.from("analysis_reports").select("title, summary, report_type, created_at").eq("user_id", user_id).order("created_at", { ascending: false }).limit(3),
       supabase.from("market_gaps").select("gap_title, gap_description, gap_category, opportunity_score, evidence").eq("user_id", user_id).order("opportunity_score", { ascending: false }).limit(10),
       supabase.from("alerts").select("title, description, alert_type, created_at").eq("user_id", user_id).order("created_at", { ascending: false }).limit(5),
+      supabase.from("app_settings").select("app_name").eq("user_id", user_id).maybeSingle(),
     ]);
 
     const profile = profileRes.data;
@@ -35,6 +36,7 @@ serve(async (req) => {
     const reports = reportsRes.data || [];
     const gaps = gapsRes.data || [];
     const alerts = alertsRes.data || [];
+    const appName = settingsRes.data?.app_name || "RivalScope";
 
     // Check if message mentions a specific competitor
     let specificCompetitorReport = "";
@@ -61,7 +63,7 @@ serve(async (req) => {
     const gapsList = gaps.map((g: any) => `- ${g.gap_title} (score: ${g.opportunity_score}/10, category: ${g.gap_category}): ${g.gap_description}`).join("\n") || "None";
     const alertsList = alerts.map((a: any) => `- [${a.alert_type}] ${a.title}: ${a.description}`).join("\n") || "None";
 
-    const systemPrompt = `You are RivalScope AI, a competitive intelligence assistant. You have access to the user's competitive intelligence data. The user's company is "${profile?.company_name || "Unknown"}" in the "${profile?.industry || "Unknown"}" industry.
+    const systemPrompt = `You are ${appName} AI, a competitive intelligence assistant. You have access to the user's competitive intelligence data. The user's company is "${profile?.company_name || "Unknown"}" in the "${profile?.industry || "Unknown"}" industry.
 
 Here is their current competitive intelligence data:
 
