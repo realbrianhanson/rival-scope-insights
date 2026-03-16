@@ -21,7 +21,9 @@ import {
   RefreshCw,
   Loader2,
   ExternalLink,
+  Download,
 } from "lucide-react";
+import { useExportPdf } from "@/hooks/useExportPdf";
 
 const reportTypeColors: Record<string, string> = {
   full_intel: "bg-[hsl(164,100%,42%)]/10 text-[hsl(164,100%,42%)]",
