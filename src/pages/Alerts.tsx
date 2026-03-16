@@ -35,6 +35,8 @@ import {
 } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useAppSettings } from "@/hooks/useAppSettings";
+import { EmptyStateWrapper } from "@/components/empty-states/EmptyStateWrapper";
+import { BellSwingIllustration } from "@/components/empty-states/BellSwingIllustration";
 
 const PAGE_SIZE = 20;
 
